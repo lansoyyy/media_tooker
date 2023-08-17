@@ -63,10 +63,10 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             children: [
               TextSpan(
                 text: widget.label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontFamily: 'Bold',
-                  color: Colors.black,
+                  color: Colors.amber[800],
                   fontWeight: FontWeight.bold,
                 ),
               ),

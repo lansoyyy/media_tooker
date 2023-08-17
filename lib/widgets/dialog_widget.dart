@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 
-import '../utils/colors.dart';
 import 'button_widget.dart';
 
 class DialogWidget extends StatelessWidget {
@@ -19,8 +18,8 @@ class DialogWidget extends StatelessWidget {
       required this.icon,
       required this.onPressed,
       this.buttonLabel = 'Continue',
-      this.iconColor = primary,
-      this.titleColor = primary});
+      this.iconColor = Colors.amber,
+      this.titleColor = Colors.amber});
 
   @override
   Widget build(BuildContext context) {
