@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/auth/signup_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 
@@ -29,7 +30,10 @@ class ProviderSelectionScreen extends StatelessWidget {
               radius: 100,
               color: Colors.amber[800],
               label: 'Production',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SignupScreen()));
+              },
             ),
             const SizedBox(
               height: 30,
@@ -38,7 +42,10 @@ class ProviderSelectionScreen extends StatelessWidget {
               radius: 100,
               color: Colors.amber[800],
               label: 'Independent',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SignupScreen()));
+              },
             ),
           ],
         ),
