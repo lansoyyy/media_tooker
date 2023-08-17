@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/auth/provider_selection_screen.dart';
+import 'package:media_tooker/screens/auth/signup_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 
@@ -42,7 +43,10 @@ class SignupSelectionScreen extends StatelessWidget {
               radius: 100,
               color: Colors.amber[800],
               label: 'Client',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SignupScreen()));
+              },
             ),
           ],
         ),
