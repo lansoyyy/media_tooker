@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/auth/signup_selection_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
@@ -132,7 +133,10 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SignupSelectionScreen()));
+                  },
                   child: TextWidget(
                     decoration: TextDecoration.underline,
                     text: 'Signup here',

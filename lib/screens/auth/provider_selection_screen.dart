@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:media_tooker/screens/auth/provider_selection_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 
 import '../../widgets/button_widget.dart';
 
-class SignupSelectionScreen extends StatelessWidget {
-  const SignupSelectionScreen({super.key});
+class ProviderSelectionScreen extends StatelessWidget {
+  const ProviderSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class SignupSelectionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextWidget(
-              text: 'Register as a:',
+              text: 'Service Provider:',
               fontSize: 24,
               color: primary,
               fontFamily: 'Regular',
@@ -29,11 +28,8 @@ class SignupSelectionScreen extends StatelessWidget {
             ButtonWidget(
               radius: 100,
               color: Colors.amber[800],
-              label: 'Service Provider',
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ProviderSelectionScreen()));
-              },
+              label: 'Production',
+              onPressed: () {},
             ),
             const SizedBox(
               height: 30,
@@ -41,7 +37,7 @@ class SignupSelectionScreen extends StatelessWidget {
             ButtonWidget(
               radius: 100,
               color: Colors.amber[800],
-              label: 'Client',
+              label: 'Independent',
               onPressed: () {},
             ),
           ],
