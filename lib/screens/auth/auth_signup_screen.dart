@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/auth/login_screen.dart';
+import 'package:media_tooker/screens/auth/terms_conditions_screen.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
 
@@ -48,8 +49,8 @@ class AuthScreen extends StatelessWidget {
                   radius: 100,
                   label: 'Done',
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const TermsConditionsScreen()));
                   },
                 ),
               ],
