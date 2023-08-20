@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/pages/messages_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
@@ -103,7 +104,10 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const MessagesPage()));
+                    },
                     icon: const Icon(
                       Icons.message,
                       color: Colors.white,
