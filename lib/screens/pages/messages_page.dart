@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/pages/chat_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 
@@ -97,13 +98,19 @@ class _MessagesPageState extends State<MessagesPage> {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return const Padding(
-                  padding: EdgeInsets.only(left: 5, right: 5),
-                  child: CircleAvatar(
-                    maxRadius: 35,
-                    minRadius: 35,
-                    backgroundImage:
-                        AssetImage('assets/images/default_logo.png'),
+                return Padding(
+                  padding: const EdgeInsets.only(left: 5, right: 5),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => ChatPage()));
+                    },
+                    child: const CircleAvatar(
+                      maxRadius: 35,
+                      minRadius: 35,
+                      backgroundImage:
+                          AssetImage('assets/images/default_logo.png'),
+                    ),
                   ),
                 );
               },
@@ -122,6 +129,10 @@ class _MessagesPageState extends State<MessagesPage> {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChatPage()));
+                      },
                       leading: const CircleAvatar(
                         maxRadius: 40,
                         minRadius: 40,
