@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ProfilePage()));
+                                builder: (context) => ProfilePage()));
                           },
                           child: Container(
                             height: 100,
@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ProfilePage()));
+                                builder: (context) => ProfilePage()));
                           },
                           child: Container(
                             height: 100,
@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ProfilePage()));
+                                builder: (context) => ProfilePage()));
                           },
                           child: Container(
                             height: 100,

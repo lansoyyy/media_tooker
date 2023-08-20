@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:media_tooker/utils/colors.dart';
+import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
+import 'package:media_tooker/widgets/textfield_widget.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -129,9 +131,18 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              // ButtonWidget(
+              //   color: primary,
+              //   radius: 100,
+              //   width: 50,
+              //   height: 35,
+              //   fontSize: 12,
+              //   textColor: Colors.black,
+              //   label: 'Edit Profile',
+              //   onPressed: () {
+              //     editProfileDialog(context);
+              //   },
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Row(
@@ -202,6 +213,80 @@ class ProfilePage extends StatelessWidget {
                       Icons.close,
                     ),
                   ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  final nameController = TextEditingController();
+  final addressController = TextEditingController();
+  final contactController = TextEditingController();
+  final emailController = TextEditingController();
+
+  editProfileDialog(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                    ),
+                  ),
+                ),
+                TextFieldWidget(
+                  label: 'Name',
+                  controller: nameController,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextFieldWidget(
+                  label: 'Location',
+                  controller: addressController,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextFieldWidget(
+                  label: 'Contact',
+                  controller: contactController,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextFieldWidget(
+                  label: 'Email',
+                  controller: emailController,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ButtonWidget(
+                  color: primary,
+                  radius: 100,
+                  width: 150,
+                  height: 45,
+                  fontSize: 15,
+                  textColor: Colors.black,
+                  label: 'Save',
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),
