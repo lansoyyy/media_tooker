@@ -106,7 +106,7 @@ class ProfilePage extends StatelessWidget {
                   TextButton.icon(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const MessagesPage()));
+                          builder: (context) => MessagesPage()));
                     },
                     icon: const Icon(
                       Icons.message,
