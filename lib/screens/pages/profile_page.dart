@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/pages/book_page.dart';
 import 'package:media_tooker/screens/pages/messages_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
@@ -32,9 +33,9 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
+                children: [
                   CircleAvatar(
                     maxRadius: 75,
                     minRadius: 75,
@@ -106,7 +107,7 @@ class ProfilePage extends StatelessWidget {
                   TextButton.icon(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MessagesPage()));
+                          builder: (context) => const MessagesPage()));
                     },
                     icon: const Icon(
                       Icons.message,
@@ -190,6 +191,18 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                 ),
+              const SizedBox(
+                height: 30,
+              ),
+              ButtonWidget(
+                color: primary,
+                radius: 100,
+                label: 'Book',
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const BookPage()));
+                },
+              ),
             ],
           ),
         ),
