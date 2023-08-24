@@ -33,9 +33,9 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: const [
                   CircleAvatar(
                     maxRadius: 75,
                     minRadius: 75,
