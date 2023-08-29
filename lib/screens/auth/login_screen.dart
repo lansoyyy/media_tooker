@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/auth/signup_selection_screen.dart';
 import 'package:media_tooker/screens/home_screen.dart';
+import 'package:media_tooker/screens/pages/freelancers/bookings_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
@@ -103,7 +104,10 @@ class LoginScreen extends StatelessWidget {
                   minWidth: 125,
                   height: 45,
                   color: Colors.blue[700],
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const BookingsPage()));
+                  },
                   child: Row(
                     children: [
                       Image.asset(
