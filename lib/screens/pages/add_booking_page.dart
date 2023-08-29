@@ -34,236 +34,238 @@ class _AddBookingPageState extends State<AddBookingPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              TextFieldWidget(
-                  label: 'Task Name', controller: tasknameController),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Date',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      dateFromPicker(context);
-                    },
-                    child: SizedBox(
-                      width: 325,
-                      height: 50,
-                      child: TextFormField(
-                        enabled: false,
-                        style: TextStyle(
-                          fontFamily: 'Regular',
-                          fontSize: 14,
-                          color: primary,
-                        ),
-
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.calendar_month_outlined,
-                            color: primary,
-                          ),
-                          hintStyle: const TextStyle(
-                            fontFamily: 'Regular',
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                          hintText: dateController.text,
-                          border: InputBorder.none,
-                          disabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFieldWidget(
+                    label: 'Task Name', controller: tasknameController),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Date',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: primary,
+                              fontWeight: FontWeight.bold,
                             ),
-                            borderRadius: BorderRadius.circular(5),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
+                          const TextSpan(
+                            text: '*',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Bold',
                               color: Colors.red,
+                              fontWeight: FontWeight.bold,
                             ),
-                            borderRadius: BorderRadius.circular(5),
                           ),
-                          errorStyle:
-                              const TextStyle(fontFamily: 'Bold', fontSize: 12),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.red,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-
-                        controller: dateController,
-                        // Pass the validator to the TextFormField
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Time',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: primary!,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(
+                      height: 5,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      timePicker();
-                    },
-                    child: SizedBox(
-                      width: 325,
-                      height: 50,
-                      child: TextFormField(
-                        enabled: false,
-                        style: TextStyle(
-                          fontFamily: 'Regular',
-                          fontSize: 14,
-                          color: primary,
-                        ),
-
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(
+                    GestureDetector(
+                      onTap: () {
+                        dateFromPicker(context);
+                      },
+                      child: SizedBox(
+                        width: 325,
+                        height: 50,
+                        child: TextFormField(
+                          enabled: false,
+                          style: TextStyle(
                             fontFamily: 'Regular',
                             fontSize: 14,
-                            color: Colors.grey,
+                            color: primary,
                           ),
-                          hintText: timeController.text,
-                          border: InputBorder.none,
-                          disabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.red,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          errorStyle:
-                              const TextStyle(fontFamily: 'Bold', fontSize: 12),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.red,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
 
-                        controller: timeController,
-                        // Pass the validator to the TextFormField
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(
+                              Icons.calendar_month_outlined,
+                              color: primary,
+                            ),
+                            hintStyle: const TextStyle(
+                              fontFamily: 'Regular',
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            hintText: dateController.text,
+                            border: InputBorder.none,
+                            disabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.red,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            errorStyle: const TextStyle(
+                                fontFamily: 'Bold', fontSize: 12),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.red,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+
+                          controller: dateController,
+                          // Pass the validator to the TextFormField
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFieldWidget(
-                  isRequred: false,
-                  label: 'Add Note',
-                  controller: noteController),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFieldWidget(label: 'Label', controller: labelController),
-              const SizedBox(
-                height: 30,
-              ),
-              ButtonWidget(
-                color: primary,
-                radius: 100,
-                label: 'Book Now',
-                onPressed: () {},
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Time',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: primary!,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: '*',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        timePicker();
+                      },
+                      child: SizedBox(
+                        width: 325,
+                        height: 50,
+                        child: TextFormField(
+                          enabled: false,
+                          style: TextStyle(
+                            fontFamily: 'Regular',
+                            fontSize: 14,
+                            color: primary,
+                          ),
+
+                          decoration: InputDecoration(
+                            hintStyle: const TextStyle(
+                              fontFamily: 'Regular',
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            hintText: timeController.text,
+                            border: InputBorder.none,
+                            disabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.red,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            errorStyle: const TextStyle(
+                                fontFamily: 'Bold', fontSize: 12),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.red,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+
+                          controller: timeController,
+                          // Pass the validator to the TextFormField
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFieldWidget(
+                    isRequred: false,
+                    label: 'Add Note',
+                    controller: noteController),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFieldWidget(label: 'Label', controller: labelController),
+                const SizedBox(
+                  height: 30,
+                ),
+                ButtonWidget(
+                  color: primary,
+                  radius: 100,
+                  label: 'Book Now',
+                  onPressed: () {},
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
           ),
         ),
       ),
