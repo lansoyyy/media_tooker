@@ -19,6 +19,13 @@ class _BookingsPageState extends State<BookingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primary,
+        child: const Icon(
+          Icons.add,
+        ),
+        onPressed: () {},
+      ),
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: primary,
