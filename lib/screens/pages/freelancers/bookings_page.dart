@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/pages/freelancers/task_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -24,7 +25,10 @@ class _BookingsPageState extends State<BookingsPage> {
         child: const Icon(
           Icons.add,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const TaskPage()));
+        },
       ),
       backgroundColor: Colors.white,
       appBar: AppBar(
