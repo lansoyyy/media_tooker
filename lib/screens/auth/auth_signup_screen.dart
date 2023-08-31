@@ -1,15 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:media_tooker/screens/auth/login_screen.dart';
-import 'package:media_tooker/screens/auth/terms_conditions_screen.dart';
+import 'package:media_tooker/services/add_user.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
+
+import '../../utils/const.dart';
+import '../../widgets/toast_widget.dart';
+import '../home_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   final passwordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
   final emailController = TextEditingController();
 
-  AuthScreen({super.key});
+  final RegistrationType regType;
+
+  final String name;
+  final String address;
+  final String birthday;
+  final String gender;
+
+  AuthScreen(
+      {super.key,
+      required this.name,
+      required this.address,
+      required this.birthday,
+      required this.gender,
+      required this.regType});
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +66,7 @@ class AuthScreen extends StatelessWidget {
                   radius: 100,
                   label: 'Done',
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const TermsConditionsScreen()));
+                    register(context);
                   },
                 ),
               ],
@@ -59,5 +75,33 @@ class AuthScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  register(context) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+
+      // addUser(nameController.text, contactnumberController.text,
+      //     addressController.text, emailController.text);
+
+      addUser(name, address, emailController.text, regType.name);
+
+      showToast('Account created succesfully!');
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomeScreen()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        showToast('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        showToast('The account already exists for that email.');
+      } else if (e.code == 'invalid-email') {
+        showToast('The email address is not valid.');
+      } else {
+        showToast(e.toString());
+      }
+    } on Exception catch (e) {
+      showToast("An error occurred: $e");
+    }
   }
 }

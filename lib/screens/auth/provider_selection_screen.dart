@@ -3,6 +3,7 @@ import 'package:media_tooker/screens/auth/signup_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 
+import '../../utils/const.dart';
 import '../../widgets/button_widget.dart';
 
 class ProviderSelectionScreen extends StatelessWidget {
@@ -31,8 +32,10 @@ class ProviderSelectionScreen extends StatelessWidget {
               color: Colors.amber[800],
               label: 'Production',
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SignupScreen()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SignupScreen(
+                          regType: RegistrationType.Production,
+                        )));
               },
             ),
             const SizedBox(
@@ -43,8 +46,10 @@ class ProviderSelectionScreen extends StatelessWidget {
               color: Colors.amber[800],
               label: 'Independent',
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SignupScreen()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SignupScreen(
+                          regType: RegistrationType.Independent,
+                        )));
               },
             ),
           ],

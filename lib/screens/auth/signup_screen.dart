@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/auth/auth_signup_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
+import 'package:media_tooker/utils/const.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
 
 import '../../widgets/text_widget.dart';
 
 class SignupScreen extends StatelessWidget {
+  final RegistrationType regType;
+
   final nameController = TextEditingController();
   final addressController = TextEditingController();
-  final emailController = TextEditingController();
+
   final birthdayController = TextEditingController();
   final genderController = TextEditingController();
 
-  SignupScreen({super.key});
+  SignupScreen({super.key, required this.regType});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class SignupScreen extends StatelessWidget {
                   TextButton(
                     onPressed: () {},
                     child: TextWidget(
-                      text: 'Production',
+                      text: regType.name,
                       fontSize: 18,
                       fontFamily: 'Bold',
                       color: primary,
@@ -55,11 +58,6 @@ class SignupScreen extends StatelessWidget {
                 height: 20,
               ),
               TextFieldWidget(label: 'Address', controller: addressController),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFieldWidget(
-                  label: 'Email Address', controller: emailController),
               const SizedBox(
                 height: 20,
               ),
@@ -143,8 +141,14 @@ class SignupScreen extends StatelessWidget {
                 radius: 100,
                 label: 'Done',
                 onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => AuthScreen()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AuthScreen(
+                            regType: regType,
+                            address: addressController.text,
+                            birthday: birthdayController.text,
+                            gender: genderController.text,
+                            name: nameController.text,
+                          )));
                 },
               ),
             ],
