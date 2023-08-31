@@ -66,7 +66,12 @@ class AuthScreen extends StatelessWidget {
                   radius: 100,
                   label: 'Done',
                   onPressed: () {
-                    register(context);
+                    if (confirmpasswordController.text !=
+                        passwordController.text) {
+                      showToast('Password do not match!');
+                    } else {
+                      register(context);
+                    }
                   },
                 ),
               ],
