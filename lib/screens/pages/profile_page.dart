@@ -6,9 +6,16 @@ import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
 
-class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  String id;
 
+  ProfilePage({super.key, required this.id});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,8 +247,11 @@ class ProfilePage extends StatelessWidget {
   }
 
   final nameController = TextEditingController();
+
   final addressController = TextEditingController();
+
   final contactController = TextEditingController();
+
   final emailController = TextEditingController();
 
   editProfileDialog(context) {

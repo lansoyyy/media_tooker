@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/pages/profile_page.dart';
 import 'package:media_tooker/utils/colors.dart';
@@ -130,122 +131,113 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextWidget(
-                  text: 'CAMERAMAN',
-                  fontSize: 14,
-                  fontFamily: 'Medium',
-                  color: Colors.yellow,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.only(left: index == 0 ? 0 : 5, right: 5),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ProfilePage()));
-                          },
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                types('CAMERAMAN', 'Cameraman'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextWidget(
-                  text: 'EDITOR',
-                  fontSize: 14,
-                  fontFamily: 'Medium',
-                  color: Colors.yellow,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.only(left: index == 0 ? 0 : 5, right: 5),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ProfilePage()));
-                          },
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                types('EDITOR', 'Editor'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextWidget(
-                  text: 'GRAPHIC ARTIST',
-                  fontSize: 14,
-                  fontFamily: 'Medium',
-                  color: Colors.yellow,
-                ),
+                types('GRAPHIC ARTIST', 'Graphic Artist'),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.only(left: index == 0 ? 0 : 5, right: 5),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ProfilePage()));
-                          },
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                types('OTHERS', 'Others'),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget types(title, filter) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextWidget(
+          text: title,
+          fontSize: 14,
+          fontFamily: 'Medium',
+          color: Colors.yellow,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('Users')
+                .where('job', isEqualTo: filter)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                print('error');
+                return const Center(child: Text('Error'));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.black,
+                  )),
+                );
+              }
+
+              final data = snapshot.requireData;
+              return SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  itemCount: data.docs.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding:
+                          EdgeInsets.only(left: index == 0 ? 0 : 5, right: 5),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProfilePage(
+                                    id: data.docs[index].id,
+                                  )));
+                        },
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Center(
+                                  child: Icon(
+                                    Icons.account_circle,
+                                    size: 60,
+                                  ),
+                                ),
+                                TextWidget(
+                                  text: data.docs[index]['name'],
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }),
+      ],
     );
   }
 }
