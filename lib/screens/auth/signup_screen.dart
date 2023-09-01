@@ -22,6 +22,11 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  String job = '';
+
+  int _dropValue1 = 0;
+
+  List jobList = ['Cameraman', 'Graphic Artist', 'Editor', 'Others'];
   Future<void> uploadDocumentFile(String inputSource) async {
     final picker = ImagePicker();
     XFile pickedImage;
@@ -211,6 +216,56 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 20,
               ),
               TextFieldWidget(label: 'Gender', controller: genderController),
+              widget.regType == RegistrationType.Independent
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, bottom: 10),
+                          child: TextWidget(
+                              text: 'Job Type:',
+                              fontSize: 14,
+                              color: Colors.black),
+                        ),
+                        Container(
+                          width: 325,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey)),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            child: DropdownButton(
+                                dropdownColor: Colors.white,
+                                focusColor: Colors.white,
+                                value: _dropValue1,
+                                items: [
+                                  for (int i = 0; i < jobList.length; i++)
+                                    DropdownMenuItem(
+                                      onTap: (() {
+                                        job = jobList[i];
+                                      }),
+                                      value: i,
+                                      child: Row(
+                                        children: [
+                                          TextWidget(
+                                              text: 'Service: ${jobList[i]}',
+                                              fontSize: 14,
+                                              color: Colors.grey),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                                onChanged: ((value) {
+                                  setState(() {
+                                    _dropValue1 = int.parse(value.toString());
+                                  });
+                                })),
+                          ),
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
               const SizedBox(
                 height: 20,
               ),
@@ -339,6 +394,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AuthScreen(
+                            job: job,
                             imageDocumentFile: docImageURL,
                             imageId: idImageURL,
                             regType: widget.regType,

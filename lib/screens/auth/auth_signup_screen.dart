@@ -16,6 +16,7 @@ class AuthScreen extends StatelessWidget {
   final RegistrationType regType;
 
   final String name;
+  final String job;
   final String address;
   final String birthday;
   final String gender;
@@ -30,7 +31,8 @@ class AuthScreen extends StatelessWidget {
       required this.gender,
       required this.regType,
       required this.imageId,
-      required this.imageDocumentFile});
+      required this.imageDocumentFile,
+      required this.job});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +97,7 @@ class AuthScreen extends StatelessWidget {
       //     addressController.text, emailController.text);
 
       addUser(name, address, emailController.text, regType.name, imageId,
-          imageDocumentFile);
+          imageDocumentFile, job);
 
       showToast('Account created succesfully!');
       Navigator.of(context).pushReplacement(
