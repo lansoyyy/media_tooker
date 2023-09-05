@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future addUser(name, address, email, type, id, doc, job) async {
+Future addUser(name, address, email, type, id, doc, job, contactNumber) async {
   final docUser = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -16,7 +16,9 @@ Future addUser(name, address, email, type, id, doc, job) async {
     'userId': FirebaseAuth.instance.currentUser!.uid,
     'id': id,
     'doc': doc,
-    'job': job
+    'job': job,
+    'portfolio': [],
+    'contactNumber': contactNumber,
   };
 
   await docUser.set(json);

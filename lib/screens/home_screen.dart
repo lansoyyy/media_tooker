@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/pages/profile_page.dart';
 import 'package:media_tooker/utils/colors.dart';
@@ -34,10 +35,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontFamily: 'Bold',
                       color: primary,
                     ),
-                    const CircleAvatar(
-                      maxRadius: 30,
-                      minRadius: 30,
-                      backgroundImage: AssetImage('assets/images/profile.png'),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfilePage(
+                                  id: FirebaseAuth.instance.currentUser!.uid,
+                                )));
+                      },
+                      child: const CircleAvatar(
+                        maxRadius: 30,
+                        minRadius: 30,
+                        backgroundImage:
+                            AssetImage('assets/images/profile.png'),
+                      ),
                     ),
                   ],
                 ),

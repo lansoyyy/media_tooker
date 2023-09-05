@@ -22,6 +22,7 @@ class AuthScreen extends StatelessWidget {
   final String gender;
   final String imageId;
   final String imageDocumentFile;
+  final String contactnumber;
 
   AuthScreen(
       {super.key,
@@ -32,6 +33,7 @@ class AuthScreen extends StatelessWidget {
       required this.regType,
       required this.imageId,
       required this.imageDocumentFile,
+      required this.contactnumber,
       required this.job});
 
   @override
@@ -97,7 +99,7 @@ class AuthScreen extends StatelessWidget {
       //     addressController.text, emailController.text);
 
       addUser(name, address, emailController.text, regType.name, imageId,
-          imageDocumentFile, job);
+          imageDocumentFile, job, contactnumber);
 
       showToast('Account created succesfully!');
       Navigator.of(context).pushReplacement(

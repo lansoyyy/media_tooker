@@ -167,6 +167,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final genderController = TextEditingController();
 
+  final contactnumberController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,6 +209,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 20,
               ),
               TextFieldWidget(label: 'Address', controller: addressController),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFieldWidget(
+                  inputType: TextInputType.number,
+                  label: 'Contact Number',
+                  controller: contactnumberController),
               const SizedBox(
                 height: 20,
               ),
@@ -394,6 +403,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AuthScreen(
+                            contactnumber: contactnumberController.text,
                             job: job,
                             imageDocumentFile: docImageURL,
                             imageId: idImageURL,
