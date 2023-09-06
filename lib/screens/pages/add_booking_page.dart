@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
@@ -19,6 +20,8 @@ class _AddBookingPageState extends State<AddBookingPage> {
   final timeController = TextEditingController();
   final noteController = TextEditingController();
   final labelController = TextEditingController();
+
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
