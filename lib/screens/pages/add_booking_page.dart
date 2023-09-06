@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:media_tooker/screens/home_screen.dart';
+import 'package:media_tooker/services/add_booking.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:media_tooker/widgets/toast_widget.dart';
 
 import '../../widgets/button_widget.dart';
 
@@ -262,7 +265,22 @@ class _AddBookingPageState extends State<AddBookingPage> {
                   color: primary,
                   radius: 100,
                   label: 'Book Now',
-                  onPressed: () {},
+                  onPressed: () {
+                    showToast('Booking submitted! Wait for further response.');
+                    addBooking(
+                      tasknameController.text,
+                      dateController.text,
+                      timeController.text,
+                      noteController.text,
+                      labelController.text,
+                      box.read('id'),
+                      box.read('name'),
+                      box.read('job'),
+                    );
+
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const HomeScreen()));
+                  },
                 ),
                 const SizedBox(
                   height: 20,
