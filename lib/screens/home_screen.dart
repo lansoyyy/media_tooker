@@ -5,6 +5,7 @@ import 'package:media_tooker/screens/pages/messages_page.dart';
 import 'package:media_tooker/screens/pages/profile_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
+import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -102,17 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextWidget(
-                    text: 'LOCATION',
-                    fontSize: 12,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
                 TextWidget(
                   text: 'PRODUCTIONS',
                   fontSize: 24,
@@ -188,6 +178,11 @@ class _HomeScreenState extends State<HomeScreen> {
         StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
+                .where('name',
+                    isGreaterThanOrEqualTo:
+                        toBeginningOfSentenceCase(nameSearched))
+                .where('name',
+                    isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
                 .where('job', isEqualTo: filter)
                 .snapshots(),
             builder:
