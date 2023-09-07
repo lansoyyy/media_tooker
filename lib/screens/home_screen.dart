@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/pages/messages_page.dart';
 import 'package:media_tooker/screens/pages/profile_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
@@ -18,6 +19,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const MessagesPage()));
+        },
+        backgroundColor: primary,
+        child: const Icon(
+          Icons.message_outlined,
+        ),
+      ),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(

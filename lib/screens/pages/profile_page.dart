@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:media_tooker/screens/pages/book_page.dart';
-import 'package:media_tooker/screens/pages/messages_page.dart';
+import 'package:media_tooker/screens/pages/chat_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
@@ -226,8 +226,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               TextButton.icon(
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MessagesPage()));
+                                      builder: (context) => ChatPage(
+                                            userData: data,
+                                          )));
                                 },
                                 icon: const Icon(
                                   Icons.message,
