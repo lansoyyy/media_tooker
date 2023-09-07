@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/pages/chat_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
+import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
 class MessagesPage extends StatefulWidget {
   const MessagesPage({super.key});
@@ -87,29 +88,60 @@ class _MessagesPageState extends State<MessagesPage> {
               ),
             ),
           ),
-          SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => ChatPage()));
+          StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('Users')
+                  .where('name',
+                      isGreaterThanOrEqualTo:
+                          toBeginningOfSentenceCase(nameSearched))
+                  .where('name',
+                      isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+                  .where('type',
+                      whereIn: ['Production', 'Independent']).snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  print('error');
+                  return const Center(child: Text('Error'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    )),
+                  );
+                }
+
+                final data = snapshot.requireData;
+                return SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    itemCount: data.docs.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 5, right: 5),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ChatPage(
+                                      userData: data.docs[index].id,
+                                    )));
+                          },
+                          child: CircleAvatar(
+                            maxRadius: 35,
+                            minRadius: 35,
+                            backgroundImage: NetworkImage(
+                                data.docs[index]['profilePicture']),
+                          ),
+                        ),
+                      );
                     },
-                    child: const CircleAvatar(
-                      maxRadius: 35,
-                      minRadius: 35,
-                      backgroundImage:
-                          AssetImage('assets/images/default_logo.png'),
-                    ),
                   ),
                 );
-              },
-            ),
-          ),
+              }),
           const Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
             child: Divider(
@@ -121,6 +153,7 @@ class _MessagesPageState extends State<MessagesPage> {
                   .collection('Messages')
                   .where('userId',
                       isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .orderBy('dateTime', descending: true)
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
