@@ -207,55 +207,72 @@ class _HomeScreenState extends State<HomeScreen> {
               }
 
               final data = snapshot.requireData;
-              return SizedBox(
-                height: 100,
-                child: ListView.builder(
-                  itemCount: data.docs.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.only(left: index == 0 ? 0 : 5, right: 5),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ProfilePage(
-                                    id: data.docs[index].id,
-                                  )));
-                        },
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Center(
-                                  child: Icon(
-                                    Icons.account_circle,
-                                    size: 60,
+              return data.docs.isNotEmpty
+                  ? SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        itemCount: data.docs.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                left: index == 0 ? 0 : 5, right: 5),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ProfilePage(
+                                          id: data.docs[index].id,
+                                        )));
+                              },
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: CircleAvatar(
+                                          maxRadius: 25,
+                                          minRadius: 25,
+                                          backgroundImage: NetworkImage(data
+                                              .docs[index]['profilePicture']),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextWidget(
+                                        text: data.docs[index]['name'],
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                TextWidget(
-                                  text: data.docs[index]['name'],
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                          );
+                        },
+                      ),
+                    )
+                  : Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: TextWidget(
+                          text: 'No available',
+                          fontSize: 14,
+                          color: Colors.white,
                         ),
                       ),
                     );
-                  },
-                ),
-              );
             }),
       ],
     );
