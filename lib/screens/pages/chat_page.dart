@@ -8,7 +8,7 @@ import 'package:media_tooker/utils/colors.dart';
 import '../../widgets/text_widget.dart';
 
 class ChatPage extends StatefulWidget {
-  var userData;
+  String? userData;
 
   ChatPage({
     super.key,
@@ -26,7 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
         .collection('Users')
-        .doc(widget.userData.id)
+        .doc(widget.userData)
         .snapshots();
 
     final Stream<DocumentSnapshot> userData1 = FirebaseFirestore.instance
@@ -36,7 +36,7 @@ class _ChatPageState extends State<ChatPage> {
 
     final Stream<DocumentSnapshot> chatData = FirebaseFirestore.instance
         .collection('Messages')
-        .doc(FirebaseAuth.instance.currentUser!.uid + widget.userData.id)
+        .doc(FirebaseAuth.instance.currentUser!.uid + widget.userData!)
         .snapshots();
     return Scaffold(
       backgroundColor: Colors.black,
@@ -155,8 +155,7 @@ class _ChatPageState extends State<ChatPage> {
                                                   minRadius: 15,
                                                   maxRadius: 15,
                                                   backgroundImage: NetworkImage(
-                                                      widget.userData[
-                                                          'profilePicture']),
+                                                      data['profilePicture']),
                                                 ),
                                               )
                                             : const SizedBox(),
@@ -236,8 +235,7 @@ class _ChatPageState extends State<ChatPage> {
                                                   minRadius: 15,
                                                   maxRadius: 15,
                                                   backgroundImage: NetworkImage(
-                                                    widget.userData[
-                                                        'profilePicture'],
+                                                    data['userProfile'],
                                                   ),
                                                 ),
                                               )
@@ -277,7 +275,7 @@ class _ChatPageState extends State<ChatPage> {
                                           .collection('Messages')
                                           .doc(FirebaseAuth
                                                   .instance.currentUser!.uid +
-                                              widget.userData.id)
+                                              widget.userData!)
                                           .update({
                                         'lastId': FirebaseAuth
                                             .instance.currentUser!.uid,
@@ -295,12 +293,12 @@ class _ChatPageState extends State<ChatPage> {
                                       });
                                     } catch (e) {
                                       addMessage(
-                                          widget.userData.id,
+                                          widget.userData,
                                           msgController.text,
-                                          widget.userData['name'],
+                                          data['name'],
                                           myData['name'],
-                                          widget.userData['profilePicture'],
-                                          data['profilePicture']);
+                                          data['profilePicture'],
+                                          myData['profilePicture']);
                                     }
 
                                     msgController.clear();

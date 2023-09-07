@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/pages/chat_page.dart';
 import 'package:media_tooker/utils/colors.dart';
@@ -19,14 +21,6 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        child: Icon(
-          Icons.add,
-          color: primary,
-        ),
-        onPressed: () {},
-      ),
       body: SafeArea(
           child: Column(
         children: [
@@ -122,48 +116,77 @@ class _MessagesPageState extends State<MessagesPage> {
               color: Colors.white,
             ),
           ),
-          Expanded(
-            child: SizedBox(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatPage()));
-                      },
-                      leading: const CircleAvatar(
-                        maxRadius: 40,
-                        minRadius: 40,
-                        backgroundImage:
-                            AssetImage('assets/images/default_logo.png'),
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                      title: TextWidget(
-                        text: 'John Doe',
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontFamily: 'Bold',
-                      ),
-                      subtitle: TextWidget(
-                        text: 'Hey whats up!',
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontFamily: 'Regular',
-                      ),
-                    ),
+          StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('Messages')
+                  .where('userId',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  print('error');
+                  return const Center(child: Text('Error'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    )),
                   );
-                },
-              ),
-            ),
-          )
+                }
+
+                final data = snapshot.requireData;
+                return Expanded(
+                  child: SizedBox(
+                    child: ListView.builder(
+                      itemCount: data.docs.length,
+                      itemBuilder: (context, index) {
+                        List msg = data.docs[index]['messages'];
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ChatPage(
+                                        userData: data.docs[index]
+                                            ['freelancerId'],
+                                      )));
+                            },
+                            leading: CircleAvatar(
+                              maxRadius: 40,
+                              minRadius: 40,
+                              backgroundImage: NetworkImage(
+                                  data.docs[index]['freelancerProfile']),
+                              child: const Align(
+                                alignment: Alignment.bottomRight,
+                                child: Icon(
+                                  Icons.circle,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
+                            title: TextWidget(
+                              text: data.docs[index]['freelancerName'],
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontFamily: 'Bold',
+                            ),
+                            subtitle: TextWidget(
+                              text: msg[msg.length - 1]['message'],
+                              fontSize: 14,
+                              color: Colors.grey,
+                              fontFamily: 'Regular',
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              })
         ],
       )),
     );

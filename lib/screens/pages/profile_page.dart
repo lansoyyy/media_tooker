@@ -227,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => ChatPage(
-                                            userData: data,
+                                            userData: data.id,
                                           )));
                                 },
                                 icon: const Icon(
