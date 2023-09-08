@@ -112,23 +112,66 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                Center(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      for (int i = 0; i < 6; i++)
-                        const Padding(
-                          padding: EdgeInsets.all(5),
-                          child: CircleAvatar(
-                            maxRadius: 50,
-                            minRadius: 50,
-                            backgroundImage:
-                                AssetImage('assets/images/default_logo.png'),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+                StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('Users')
+                        .where('type', isEqualTo: 'Production')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        print('error');
+                        return const Center(child: Text('Error'));
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.black,
+                          )),
+                        );
+                      }
+
+                      final data = snapshot.requireData;
+                      return Center(
+                        child: data.docs.isNotEmpty
+                            ? Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  for (int i = 0; i < data.docs.length; i++)
+                                    Padding(
+                                      padding: const EdgeInsets.all(5),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProfilePage(
+                                                        id: data.docs[i].id,
+                                                      )));
+                                        },
+                                        child: CircleAvatar(
+                                          maxRadius: 50,
+                                          minRadius: 50,
+                                          backgroundImage: NetworkImage(
+                                              data.docs[i]['profilePicture']),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              )
+                            : Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                child: TextWidget(
+                                  text: 'No available',
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                      );
+                    }),
                 const SizedBox(
                   height: 10,
                 ),
