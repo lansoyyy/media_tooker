@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:media_tooker/screens/auth/auth_signup_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/utils/const.dart';
@@ -25,6 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
   String job = '';
 
   int _dropValue1 = 0;
+  int _dropValue2 = 0;
 
   List jobList = ['Cameraman', 'Graphic Artist', 'Editor', 'Others'];
   Future<void> uploadDocumentFile(String inputSource) async {
@@ -169,6 +171,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final contactnumberController = TextEditingController();
 
+  List genders = ['Male', 'Female', 'Others'];
+
+  String gender = 'Male';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,7 +214,8 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 20,
               ),
-              TextFieldWidget(label: 'Address', controller: addressController),
+              TextFieldWidget(
+                  label: 'City and Zip Code', controller: addressController),
               const SizedBox(
                 height: 20,
               ),
@@ -219,12 +226,153 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 20,
               ),
-              TextFieldWidget(
-                  label: 'Birthday', controller: birthdayController),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Birthday',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      dateFromPicker(context);
+                    },
+                    child: SizedBox(
+                      width: 325,
+                      height: 50,
+                      child: TextFormField(
+                        enabled: false,
+                        style: TextStyle(
+                          fontFamily: 'Regular',
+                          fontSize: 14,
+                          color: primary,
+                        ),
+
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.calendar_month_outlined,
+                            color: primary,
+                          ),
+                          hintStyle: const TextStyle(
+                            fontFamily: 'Regular',
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                          hintText: dateController.text,
+                          border: InputBorder.none,
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          errorStyle:
+                              const TextStyle(fontFamily: 'Bold', fontSize: 12),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+
+                        controller: dateController,
+                        // Pass the validator to the TextFormField
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 20,
               ),
-              TextFieldWidget(label: 'Gender', controller: genderController),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, bottom: 10),
+                    child: TextWidget(
+                        text: 'Gender:', fontSize: 14, color: primary),
+                  ),
+                  Container(
+                    width: 325,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey)),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: DropdownButton(
+                          dropdownColor: Colors.white,
+                          focusColor: Colors.white,
+                          value: _dropValue2,
+                          items: [
+                            for (int i = 0; i < genders.length; i++)
+                              DropdownMenuItem(
+                                onTap: (() {
+                                  gender = genders[i];
+                                }),
+                                value: i,
+                                child: Row(
+                                  children: [
+                                    TextWidget(
+                                        text: '${genders[i]}',
+                                        fontSize: 14,
+                                        color: Colors.grey),
+                                  ],
+                                ),
+                              ),
+                          ],
+                          onChanged: ((value) {
+                            setState(() {
+                              _dropValue2 = int.parse(value.toString());
+                            });
+                          })),
+                    ),
+                  ),
+                ],
+              ),
               widget.regType == RegistrationType.Independent
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,8 +557,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             imageId: idImageURL,
                             regType: widget.regType,
                             address: addressController.text,
-                            birthday: birthdayController.text,
-                            gender: genderController.text,
+                            birthday: dateController.text,
+                            gender: gender,
                             name: nameController.text,
                           )));
                 },
@@ -420,5 +568,37 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
+  }
+
+  final dateController = TextEditingController();
+
+  void dateFromPicker(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: primary!,
+                onPrimary: Colors.white,
+                onSurface: Colors.grey,
+              ),
+            ),
+            child: child!,
+          );
+        },
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2050));
+
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+
+      setState(() {
+        dateController.text = formattedDate;
+      });
+    } else {
+      return null;
+    }
   }
 }
