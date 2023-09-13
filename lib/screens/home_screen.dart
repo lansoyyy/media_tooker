@@ -7,6 +7,8 @@ import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
+import 'auth/login_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -59,6 +61,55 @@ class _HomeScreenState extends State<HomeScreen> {
                         minRadius: 30,
                         backgroundImage:
                             AssetImage('assets/images/profile.png'),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text(
+                                    'Logout Confirmation',
+                                    style: TextStyle(
+                                        fontFamily: 'QBold',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  content: const Text(
+                                    'Are you sure you want to Logout?',
+                                    style: TextStyle(fontFamily: 'QRegular'),
+                                  ),
+                                  actions: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                      child: const Text(
+                                        'Close',
+                                        style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () async {
+                                        await FirebaseAuth.instance.signOut();
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginScreen()));
+                                      },
+                                      child: const Text(
+                                        'Continue',
+                                        style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ));
+                      },
+                      icon: const Icon(
+                        Icons.logout,
+                        color: Colors.white,
                       ),
                     ),
                   ],

@@ -16,6 +16,8 @@ import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
+import 'freelancers/bookings_page.dart';
+
 class ProfilePage extends StatefulWidget {
   String id;
 
@@ -262,17 +264,42 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ],
                           )
-                        : ButtonWidget(
-                            color: primary,
-                            radius: 100,
-                            width: 50,
-                            height: 35,
-                            fontSize: 12,
-                            textColor: Colors.black,
-                            label: 'Edit Profile',
-                            onPressed: () {
-                              editProfileDialog(context);
-                            },
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ButtonWidget(
+                                color: primary,
+                                radius: 100,
+                                width: 50,
+                                height: 35,
+                                fontSize: 12,
+                                textColor: Colors.black,
+                                label: 'Edit Profile',
+                                onPressed: () {
+                                  editProfileDialog(context);
+                                },
+                              ),
+                              SizedBox(
+                                width: data['type'] != 'Client' ? 20 : 0,
+                              ),
+                              data['type'] != 'Client'
+                                  ? ButtonWidget(
+                                      color: primary,
+                                      radius: 100,
+                                      width: 50,
+                                      height: 35,
+                                      fontSize: 12,
+                                      textColor: Colors.black,
+                                      label: 'View Bookings',
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const BookingsPage()));
+                                      },
+                                    )
+                                  : const SizedBox()
+                            ],
                           ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),

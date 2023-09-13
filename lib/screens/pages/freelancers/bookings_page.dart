@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:media_tooker/screens/pages/freelancers/task_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
+import 'package:media_tooker/widgets/toast_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class BookingsPage extends StatefulWidget {
@@ -61,47 +65,106 @@ class _BookingsPageState extends State<BookingsPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Expanded(
-                        child: SizedBox(
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: TextWidget(
-                                  text: 'Title here',
-                                  fontSize: 18,
-                                  fontFamily: 'Bold',
-                                ),
-                                subtitle: TextWidget(
-                                  text: 'Description here',
-                                  fontSize: 12,
-                                  fontFamily: 'Regular',
-                                ),
-                                trailing: SizedBox(
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: const Icon(
-                                          Icons.remove_circle,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: const Icon(
-                                          Icons.add_circle_rounded,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                      StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Bookings')
+                              .where('freelancerId',
+                                  isEqualTo:
+                                      FirebaseAuth.instance.currentUser!.uid)
+                              .where('date',
+                                  isEqualTo: DateFormat('yyyy-M-dd')
+                                      .format(selectedDay)
+                                      .toString())
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              print('error');
+                              return const Center(child: Text('Error'));
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 50),
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                )),
                               );
-                            },
-                          ),
-                        ),
-                      ),
+                            }
+
+                            final data = snapshot.requireData;
+                            return Expanded(
+                              child: SizedBox(
+                                child: ListView.builder(
+                                  itemCount: data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: TextWidget(
+                                        text: data.docs[index]['name'],
+                                        fontSize: 18,
+                                        fontFamily: 'Bold',
+                                      ),
+                                      subtitle: TextWidget(
+                                        text: data.docs[index]['note'],
+                                        fontSize: 12,
+                                        fontFamily: 'Regular',
+                                      ),
+                                      trailing: data.docs[index]['status'] ==
+                                              'Pending'
+                                          ? SizedBox(
+                                              width: 150,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              'Bookings')
+                                                          .doc(data
+                                                              .docs[index].id)
+                                                          .update({
+                                                        'status': 'Rejected',
+                                                      });
+                                                      showToast(
+                                                          'Succesfully rejected booking!');
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.remove_circle,
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              'Bookings')
+                                                          .doc(data
+                                                              .docs[index].id)
+                                                          .update({
+                                                        'status': 'Accepted',
+                                                      });
+                                                      showToast(
+                                                          'Succesfully Accepted booking!');
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.add_circle_rounded,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : const SizedBox(),
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          }),
                     ],
                   ),
                 ),

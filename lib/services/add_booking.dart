@@ -17,6 +17,8 @@ Future addBooking(
     'freelancerName': freelancerName,
     'job': job,
     'myId': FirebaseAuth.instance.currentUser!.uid,
+    'status': 'Pending',
+    'isCompleted': false
   };
 
   await docUser.set(json);
