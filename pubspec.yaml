@@ -46,6 +46,8 @@ dependencies:
   image_picker:
   fluttertoast:
   url_launcher:
+  google_sign_in:
+  firebase_auth_oauth:
 
 dev_dependencies:
   flutter_test:

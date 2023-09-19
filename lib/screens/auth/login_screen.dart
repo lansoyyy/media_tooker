@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_tooker/screens/auth/signup_selection_screen.dart';
 import 'package:media_tooker/screens/home_screen.dart';
 import 'package:media_tooker/utils/colors.dart';
@@ -9,11 +10,38 @@ import 'package:media_tooker/widgets/textfield_widget.dart';
 
 import '../../widgets/toast_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
-  LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
+  void logInWithGoogle(context) async {
+    try {
+      final googleSignInAccount = await _googleSignIn.signIn();
+
+      final googleSignInAuth = await googleSignInAccount!.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuth.accessToken,
+        idToken: googleSignInAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      // addUser(googleSignInAuth, address, email, type, id, doc, job, contactNumber)
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomeScreen()));
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+  }
+
+  final emailController = TextEditingController();
+
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
