@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_tooker/screens/auth/signup_selection_screen.dart';
 import 'package:media_tooker/screens/home_screen.dart';
+import 'package:media_tooker/services/add_user.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
@@ -30,8 +31,15 @@ class _LoginScreenState extends State<LoginScreen> {
         idToken: googleSignInAuth.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final authResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Access the user's display name (username)
+      final user = authResult.user;
       // addUser(googleSignInAuth, address, email, type, id, doc, job, contactNumber)
+
+      addUser(user!.displayName, '', user.email, 'Client', user.uid, '', '',
+          user.phoneNumber);
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomeScreen()));
     } on FirebaseAuthException catch (e) {
@@ -107,7 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     minWidth: 125,
                     height: 45,
                     color: Colors.white,
-                    onPressed: () {},
+                    onPressed: () {
+                      logInWithGoogle(context);
+                    },
                     child: Row(
                       children: [
                         Image.asset(
