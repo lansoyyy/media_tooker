@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:media_tooker/screens/auth/login_screen.dart';
 import 'package:media_tooker/services/add_user.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
@@ -103,7 +104,7 @@ class AuthScreen extends StatelessWidget {
 
       showToast('Account created succesfully!');
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showToast('The password provided is too weak.');

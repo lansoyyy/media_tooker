@@ -19,6 +19,7 @@ Future addUser(name, address, email, type, id, doc, job, contactNumber) async {
     'job': job,
     'portfolio': [],
     'contactNumber': contactNumber,
+    'isVerified': false,
   };
 
   await docUser.set(json);

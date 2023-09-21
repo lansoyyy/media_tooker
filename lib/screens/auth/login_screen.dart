@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -202,13 +203,32 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  bool isVerified = false;
+
   login(context) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-      showToast('Logged in succesfully!');
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+
+      FirebaseFirestore.instance
+          .collection('Users')
+          .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        for (var doc in querySnapshot.docs) {
+          setState(() {
+            isVerified = doc['isVerified'];
+          });
+        }
+      });
+      if (isVerified) {
+        showToast('Logged in succesfully!');
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
+      } else {
+        showToast('Account not yet verified!');
+        await FirebaseAuth.instance.signOut();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showToast("No user found with that email.");
