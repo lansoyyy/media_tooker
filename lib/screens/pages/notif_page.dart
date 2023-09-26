@@ -1,0 +1,23 @@
+import 'package:flutter/material.dart';
+
+import '../../widgets/text_widget.dart';
+
+class NotifPage extends StatelessWidget {
+  const NotifPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.black,
+        title: TextWidget(
+          text: 'Notifications',
+          fontSize: 18,
+          color: Colors.white,
+        ),
+        centerTitle: true,
+      ),
+    );
+  }
+}

@@ -36,7 +36,7 @@ class _BookingsPageState extends State<BookingsPage> {
       ),
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: primary,
+        backgroundColor: Colors.black,
         title: TextWidget(
           text: 'Bookings',
           fontSize: 18,

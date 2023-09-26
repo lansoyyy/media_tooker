@@ -19,6 +19,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final searchController = TextEditingController();
   String nameSearched = '';
+
+  int currentIndex = 0;
+
+  void onTabTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  final List<Widget> children = [
+    const HomeScreen(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LoginScreen()));
+                                                    const LoginScreen()));
                                       },
                                       child: const Text(
                                         'Continue',

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/pages/chat_page.dart';
-import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
@@ -22,35 +21,21 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.black,
+        title: TextWidget(
+          text: 'Messages',
+          fontSize: 18,
+          color: Colors.white,
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
           child: Column(
         children: [
           const SizedBox(
             height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_rounded,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-              TextWidget(
-                text: 'Messages',
-                fontSize: 32,
-                fontFamily: 'Bold',
-                color: primary,
-              ),
-              const SizedBox(
-                width: 50,
-              ),
-            ],
           ),
           Padding(
             padding:
