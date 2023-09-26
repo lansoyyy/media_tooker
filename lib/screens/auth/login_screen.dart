@@ -314,6 +314,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .get()
           .then((QuerySnapshot querySnapshot) async {
         for (var doc in querySnapshot.docs) {
+          print(doc['name']);
           setState(() {
             isVerified = doc['isVerified'];
           });
