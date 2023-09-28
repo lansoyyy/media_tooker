@@ -308,26 +308,22 @@ class _LoginScreenState extends State<LoginScreen> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
 
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('Users')
           .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get()
           .then((QuerySnapshot querySnapshot) async {
         for (var doc in querySnapshot.docs) {
-          print(doc['name']);
-          setState(() {
-            isVerified = doc['isVerified'];
-          });
+          if (doc['isVerified']) {
+            showToast('Logged in succesfully!');
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
+          } else {
+            showToast('Account not yet verified!');
+            await FirebaseAuth.instance.signOut();
+          }
         }
       });
-      if (isVerified) {
-        showToast('Logged in succesfully!');
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
-      } else {
-        showToast('Account not yet verified!');
-        await FirebaseAuth.instance.signOut();
-      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showToast("No user found with that email.");
