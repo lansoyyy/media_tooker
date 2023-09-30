@@ -61,20 +61,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontFamily: 'Bold',
                       color: primary,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfilePage(
-                                  id: FirebaseAuth.instance.currentUser!.uid,
-                                )));
-                      },
-                      child: const CircleAvatar(
-                        maxRadius: 30,
-                        minRadius: 30,
-                        backgroundImage:
-                            AssetImage('assets/images/profile.png'),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.of(context).push(MaterialPageRoute(
+                    //         builder: (context) => ProfilePage(
+                    //               id: FirebaseAuth.instance.currentUser!.uid,
+                    //             )));
+                    //   },
+                    //   child: const CircleAvatar(
+                    //     maxRadius: 30,
+                    //     minRadius: 30,
+                    //     backgroundImage:
+                    //         AssetImage('assets/images/profile.png'),
+                    //   ),
+                    // ),
                     IconButton(
                       onPressed: () {
                         showDialog(

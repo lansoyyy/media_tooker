@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:media_tooker/screens/pages/freelancers/bookings_page.dart';
 import 'package:media_tooker/screens/pages/messages_page.dart';
 import 'package:media_tooker/screens/pages/notif_page.dart';
+import 'package:media_tooker/screens/pages/profile_page.dart';
 
 import 'home_screen.dart';
 
@@ -25,7 +27,8 @@ class _HomeTabState extends State<HomeTab> {
     const HomeScreen(),
     const MessagesPage(),
     const BookingsPage(),
-    const NotifPage()
+    const NotifPage(),
+    ProfilePage(id: FirebaseAuth.instance.currentUser!.uid)
   ];
 
   @override
@@ -58,6 +61,10 @@ class _HomeTabState extends State<HomeTab> {
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
           ),
         ],
       ),
