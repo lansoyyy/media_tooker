@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:media_tooker/services/add_notif.dart';
 
 Future addBooking(
     name, date, time, note, label, freelancerId, freelancerName, job) async {
@@ -20,6 +21,8 @@ Future addBooking(
     'status': 'Pending',
     'isCompleted': false
   };
+
+  addNotifUser('You have received a booking: $name', freelancerId);
 
   await docUser.set(json);
 }

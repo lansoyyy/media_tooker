@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:media_tooker/screens/pages/freelancers/task_page.dart';
+import 'package:media_tooker/services/add_notif.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:media_tooker/widgets/toast_widget.dart';
@@ -132,6 +133,11 @@ class _BookingsPageState extends State<BookingsPage> {
                                                       });
                                                       showToast(
                                                           'Succesfully rejected booking!');
+
+                                                      addNotifFreelancer(
+                                                          'Your booking was rejected: ${data.docs[index]['name']}',
+                                                          data.docs[index]
+                                                              ['myId']);
                                                     },
                                                     child: const Icon(
                                                       Icons.remove_circle,
@@ -150,6 +156,11 @@ class _BookingsPageState extends State<BookingsPage> {
                                                       });
                                                       showToast(
                                                           'Succesfully Accepted booking!');
+
+                                                      addNotifFreelancer(
+                                                          'Your booking was accepted: ${data.docs[index]['name']}',
+                                                          data.docs[index]
+                                                              ['myId']);
                                                     },
                                                     child: const Icon(
                                                       Icons.add_circle_rounded,
