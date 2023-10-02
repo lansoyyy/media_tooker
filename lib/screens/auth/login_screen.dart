@@ -211,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   MaterialButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    minWidth: 125,
+                    minWidth: 300,
                     height: 45,
                     color: Colors.white,
                     onPressed: () {
@@ -230,37 +230,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           text: 'Google',
                           fontSize: 12,
                           fontFamily: 'Bold',
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    minWidth: 125,
-                    height: 45,
-                    color: Colors.blue[700],
-                    onPressed: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => const BookingsPage()));
-                    },
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/fblogo.png',
-                          height: 25,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        TextWidget(
-                          text: 'Facebook',
-                          fontSize: 12,
-                          fontFamily: 'Bold',
-                          color: Colors.white,
                         ),
                       ],
                     ),
