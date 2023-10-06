@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final user = authResult.user;
       // addUser(googleSignInAuth, address, email, type, id, doc, job, contactNumber)
 
-      addUser(user!.displayName, '', user.email, 'Client', user.uid, '', '',
+      addUser(user!.displayName, '', user.email, 'Client', user.uid, '', [],
           user.phoneNumber);
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomeScreen()));

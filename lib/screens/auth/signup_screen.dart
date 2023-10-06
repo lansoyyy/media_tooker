@@ -25,7 +25,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   String job = '';
 
-  int _dropValue1 = 0;
+  final int _dropValue1 = 0;
   int _dropValue2 = 0;
 
   List jobList = ['Cameraman', 'Graphic Artist', 'Editor', 'Others'];
@@ -46,11 +46,11 @@ class _SignupScreenState extends State<SignupScreen> {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (BuildContext context) => Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
+          builder: (BuildContext context) => const Padding(
+            padding: EdgeInsets.only(left: 30, right: 30),
             child: AlertDialog(
                 title: Row(
-              children: const [
+              children: [
                 CircularProgressIndicator(
                   color: Colors.black,
                 ),
@@ -101,6 +101,22 @@ class _SignupScreenState extends State<SignupScreen> {
 
   late String idImageURL = '';
 
+  List<String> selectedItems = [];
+
+  List<String> dartVideographerItems = [
+    "Videographer",
+    "Editor",
+    "Photographer",
+    "Animator",
+    "Graphics Designer",
+    "3D Artist",
+    "Cinematographer",
+    "Writer",
+    "Director",
+    "Art Director",
+    "Production Designer",
+  ];
+
   Future<void> uploadValidID(String inputSource) async {
     final picker = ImagePicker();
     XFile pickedImage;
@@ -118,11 +134,11 @@ class _SignupScreenState extends State<SignupScreen> {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (BuildContext context) => Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
+          builder: (BuildContext context) => const Padding(
+            padding: EdgeInsets.only(left: 30, right: 30),
             child: AlertDialog(
                 title: Row(
-              children: const [
+              children: [
                 CircularProgressIndicator(
                   color: Colors.black,
                 ),
@@ -373,52 +389,44 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 10,
+              ),
               widget.regType == RegistrationType.Independent
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 10),
-                          child: TextWidget(
-                              text: 'Job Type:',
-                              fontSize: 14,
-                              color: Colors.black),
-                        ),
-                        Container(
-                          width: 325,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey)),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            child: DropdownButton(
-                                dropdownColor: Colors.white,
-                                focusColor: Colors.white,
-                                value: _dropValue1,
-                                items: [
-                                  for (int i = 0; i < jobList.length; i++)
-                                    DropdownMenuItem(
-                                      onTap: (() {
-                                        job = jobList[i];
-                                      }),
-                                      value: i,
-                                      child: Row(
-                                        children: [
-                                          TextWidget(
-                                              text: 'Service: ${jobList[i]}',
-                                              fontSize: 14,
-                                              color: Colors.grey),
-                                        ],
-                                      ),
-                                    ),
-                                ],
-                                onChanged: ((value) {
+                        TextWidget(
+                            text: 'Service offered:',
+                            fontSize: 14,
+                            color: Colors.white),
+                        Wrap(
+                          children: dartVideographerItems.map((item) {
+                            bool isSelected = selectedItems.contains(item);
+                            return Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: ChoiceChip(
+                                selectedColor: primary,
+                                backgroundColor: Colors.grey,
+                                label: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                selected: isSelected,
+                                onSelected: (selected) {
                                   setState(() {
-                                    _dropValue1 = int.parse(value.toString());
+                                    if (selected) {
+                                      selectedItems.add(item);
+                                    } else {
+                                      selectedItems.remove(item);
+                                    }
                                   });
-                                })),
-                          ),
+                                },
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ],
                     )
@@ -552,7 +560,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AuthScreen(
                             contactnumber: contactnumberController.text,
-                            job: job,
+                            job: selectedItems,
                             imageDocumentFile: docImageURL,
                             imageId: idImageURL,
                             regType: widget.regType,

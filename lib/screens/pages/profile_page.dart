@@ -51,11 +51,11 @@ class _ProfilePageState extends State<ProfilePage> {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (BuildContext context) => Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
+          builder: (BuildContext context) => const Padding(
+            padding: EdgeInsets.only(left: 30, right: 30),
             child: AlertDialog(
                 title: Row(
-              children: const [
+              children: [
                 CircularProgressIndicator(
                   color: Colors.black,
                 ),
@@ -140,19 +140,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     const SizedBox(
                       height: 20,
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios_rounded,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,

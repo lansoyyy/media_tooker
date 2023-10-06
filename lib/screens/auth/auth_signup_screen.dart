@@ -7,7 +7,6 @@ import 'package:media_tooker/widgets/textfield_widget.dart';
 
 import '../../utils/const.dart';
 import '../../widgets/toast_widget.dart';
-import '../home_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   final passwordController = TextEditingController();
@@ -17,7 +16,7 @@ class AuthScreen extends StatelessWidget {
   final RegistrationType regType;
 
   final String name;
-  final String job;
+  final List job;
   final String address;
   final String birthday;
   final String gender;

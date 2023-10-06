@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:media_tooker/screens/pages/freelancers/bookings_page.dart';
 import 'package:media_tooker/screens/pages/messages_page.dart';
 import 'package:media_tooker/screens/pages/notif_page.dart';
@@ -23,16 +24,24 @@ class _HomeTabState extends State<HomeTab> {
     });
   }
 
-  final List<Widget> children = [
-    const HomeScreen(),
-    const MessagesPage(),
-    const BookingsPage(),
-    const NotifPage(),
-    ProfilePage(id: FirebaseAuth.instance.currentUser!.uid)
-  ];
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> children = box.read('user') == 'Client'
+        ? [
+            const HomeScreen(),
+            const MessagesPage(),
+            const NotifPage(),
+            ProfilePage(id: FirebaseAuth.instance.currentUser!.uid)
+          ]
+        : [
+            const HomeScreen(),
+            const MessagesPage(),
+            const BookingsPage(),
+            const NotifPage(),
+            ProfilePage(id: FirebaseAuth.instance.currentUser!.uid)
+          ];
     return Scaffold(
       body: children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -43,30 +52,51 @@ class _HomeTabState extends State<HomeTab> {
         onTap: onTabTapped,
         currentIndex: currentIndex,
         backgroundColor: Colors.black,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Messages',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline_outlined),
-            label: 'Bookings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
+        items: box.read('user') == 'Client'
+            ? [
+                const BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: 'Home',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.message),
+                  label: 'Messages',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications),
+                  label: 'Notifications',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle),
+                  label: 'Profile',
+                ),
+              ]
+            : [
+                const BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: 'Home',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.message),
+                  label: 'Messages',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.add_circle_outline_outlined),
+                  label: 'Bookings',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications),
+                  label: 'Notifications',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle),
+                  label: 'Profile',
+                ),
+              ],
       ),
     );
   }
