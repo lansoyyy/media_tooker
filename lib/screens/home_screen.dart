@@ -292,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         toBeginningOfSentenceCase(nameSearched))
                 .where('name',
                     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
-                .where('job', isEqualTo: filter)
+                .where('job', arrayContains: filter)
                 .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

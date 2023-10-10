@@ -167,11 +167,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: primary,
                       fontFamily: 'Bold',
                     ),
-                    TextWidget(
-                      text: data['job'],
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontFamily: 'Medium',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (int i = 0; i < data['job'].length; i++)
+                          TextWidget(
+                            text: data['job'][i] + ', ',
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontFamily: 'Medium',
+                          ),
+                      ],
                     ),
                     const SizedBox(
                       height: 5,
@@ -352,7 +358,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             label: 'Book',
                             onPressed: () {
                               box.write('name', data['name']);
-                              box.write('job', data['job']);
+                              box.write('job', data['job'][0]);
                               box.write('id', data.id);
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const BookPage()));
