@@ -137,13 +137,21 @@ class _BookingsPageState extends State<BookingsPage> {
                                                               .start,
                                                       children: [
                                                         TextWidget(
-                                                          text: 'OCT',
+                                                          text: DateFormat.MMM()
+                                                              .format(data
+                                                                  .docs[index][
+                                                                      'dateTime']
+                                                                  .toDate()),
                                                           fontSize: 24,
                                                           fontFamily: 'Medium',
                                                           color: primary,
                                                         ),
                                                         TextWidget(
-                                                          text: '14',
+                                                          text: DateFormat.d()
+                                                              .format(data
+                                                                  .docs[index][
+                                                                      'dateTime']
+                                                                  .toDate()),
                                                           fontSize: 48,
                                                           fontFamily: 'Bold',
                                                           color: primary,
@@ -162,7 +170,8 @@ class _BookingsPageState extends State<BookingsPage> {
                                                               .start,
                                                       children: [
                                                         TextWidget(
-                                                          text: 'John Doe',
+                                                          text: data.docs[index]
+                                                              ['myname'],
                                                           fontSize: 18,
                                                           fontFamily: 'Bold',
                                                           color: primary,
@@ -171,7 +180,8 @@ class _BookingsPageState extends State<BookingsPage> {
                                                           height: 10,
                                                         ),
                                                         TextWidget(
-                                                          text: 'Task: Dota',
+                                                          text:
+                                                              'Task: ${data.docs[index]['name']}',
                                                           fontSize: 12,
                                                           fontFamily: 'Regular',
                                                           color: primary,
@@ -180,7 +190,8 @@ class _BookingsPageState extends State<BookingsPage> {
                                                           height: 5,
                                                         ),
                                                         TextWidget(
-                                                          text: 'Time: 9:30AM',
+                                                          text:
+                                                              'Time: ${data.docs[index]['time']}',
                                                           fontSize: 12,
                                                           fontFamily: 'Regular',
                                                           color: primary,
@@ -189,7 +200,8 @@ class _BookingsPageState extends State<BookingsPage> {
                                                           height: 5,
                                                         ),
                                                         TextWidget(
-                                                          text: 'Note: 9:30AM',
+                                                          text:
+                                                              'Note: ${data.docs[index]['note']}',
                                                           fontSize: 12,
                                                           fontFamily: 'Regular',
                                                           color: primary,

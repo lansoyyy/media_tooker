@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:media_tooker/screens/home_screen.dart';
@@ -27,6 +29,10 @@ class _AddBookingPageState extends State<AddBookingPage> {
   final box = GetStorage();
   @override
   Widget build(BuildContext context) {
+    final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -261,27 +267,44 @@ class _AddBookingPageState extends State<AddBookingPage> {
                 const SizedBox(
                   height: 30,
                 ),
-                ButtonWidget(
-                  color: primary,
-                  radius: 100,
-                  label: 'Book Now',
-                  onPressed: () {
-                    showToast('Booking submitted! Wait for further response.');
-                    addBooking(
-                      tasknameController.text,
-                      dateController.text,
-                      timeController.text,
-                      noteController.text,
-                      labelController.text,
-                      box.read('id'),
-                      box.read('name'),
-                      box.read('job'),
-                    );
+                StreamBuilder<DocumentSnapshot>(
+                    stream: userData,
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (!snapshot.hasData) {
+                        return const SizedBox();
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                            child: Text('Something went wrong'));
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const SizedBox();
+                      }
+                      dynamic data = snapshot.data;
+                      return ButtonWidget(
+                        color: primary,
+                        radius: 100,
+                        label: 'Book Now',
+                        onPressed: () {
+                          showToast(
+                              'Booking submitted! Wait for further response.');
+                          addBooking(
+                              tasknameController.text,
+                              dateController.text,
+                              timeController.text,
+                              noteController.text,
+                              labelController.text,
+                              box.read('id'),
+                              box.read('name'),
+                              box.read('job'),
+                              data['name']);
 
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
-                  },
-                ),
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
+                        },
+                      );
+                    }),
                 const SizedBox(
                   height: 20,
                 ),
