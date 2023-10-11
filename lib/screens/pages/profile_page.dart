@@ -34,7 +34,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   late String imageURL = '';
 
-  Future<void> uploadPicture(String inputSource) async {
+  String selected = '';
+
+  Future<void> uploadPicture(String inputSource, String selected) async {
     final picker = ImagePicker();
     XFile pickedImage;
     try {
@@ -85,7 +87,9 @@ class _ProfilePageState extends State<ProfilePage> {
             .collection('Users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({
-          'portfolio': FieldValue.arrayUnion([imageURL])
+          'portfolio': FieldValue.arrayUnion([
+            {'img': imageURL, 'type': selected}
+          ])
         });
 
         showToast('Image added to portfolio!');
@@ -112,16 +116,6 @@ class _ProfilePageState extends State<ProfilePage> {
         .doc(widget.id)
         .snapshots();
     return Scaffold(
-      floatingActionButton: FirebaseAuth.instance.currentUser!.uid == widget.id
-          ? FloatingActionButton(
-              backgroundColor: primary,
-              child: const Icon(
-                Icons.add,
-              ),
-              onPressed: () {
-                uploadPicture('gallery');
-              })
-          : const SizedBox(),
       backgroundColor: Colors.black,
       body: StreamBuilder<DocumentSnapshot>(
           stream: userData,
@@ -296,8 +290,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextWidget(
                             text: FirebaseAuth.instance.currentUser!.uid !=
@@ -308,46 +303,90 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: primary,
                             fontFamily: 'Bold',
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          for (int i = 0; i < data['job'].length; i++)
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextWidget(
+                                      text: data['job'][i],
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontFamily: 'Bold',
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        uploadPicture(
+                                            'gallery', data['job'][i]);
+                                      },
+                                      icon: const Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                for (int i = 0;
+                                    i < data['portfolio'].length;
+                                    i++)
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20, top: 10),
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: ListView.builder(
+                                        itemCount: data['portfolio'].length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return data['portfolio'][index] ==
+                                                  data['job'][i]
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: index == 0 ? 0 : 5,
+                                                      right: 5),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      portfolioDialog(
+                                                          context,
+                                                          data['portfolio']
+                                                              [index]['img']);
+                                                    },
+                                                    child: Container(
+                                                      height: 100,
+                                                      width: 100,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                              data['portfolio']
+                                                                      [index]
+                                                                  ['img'],
+                                                            ),
+                                                            fit: BoxFit.cover),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox();
+                                        },
+                                      ),
+                                    ),
+                                  )
+                              ],
+                            ),
                         ],
                       ),
                     ),
-                    for (int i = 0; i < 2; i++)
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 10),
-                        child: SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                            itemCount: data['portfolio'].length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    left: index == 0 ? 0 : 5, right: 5),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    portfolioDialog(
-                                        context, data['portfolio'][index]);
-                                  },
-                                  child: Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                            data['portfolio'][index],
-                                          ),
-                                          fit: BoxFit.cover),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
                     const SizedBox(
                       height: 30,
                     ),
