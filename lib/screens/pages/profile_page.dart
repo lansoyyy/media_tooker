@@ -36,15 +36,22 @@ class _ProfilePageState extends State<ProfilePage> {
 
   String selected = '';
 
-  Future<void> uploadPicture(String inputSource, String selected) async {
+  Future<void> uploadPicture(
+      String inputSource, String selected, bool isVideo) async {
     final picker = ImagePicker();
     XFile pickedImage;
     try {
-      pickedImage = (await picker.pickImage(
-          source: inputSource == 'camera'
-              ? ImageSource.camera
-              : ImageSource.gallery,
-          maxWidth: 1920))!;
+      pickedImage = isVideo
+          ? (await picker.pickVideo(
+              source: inputSource == 'camera'
+                  ? ImageSource.camera
+                  : ImageSource.gallery,
+            ))!
+          : (await picker.pickImage(
+              source: inputSource == 'camera'
+                  ? ImageSource.camera
+                  : ImageSource.gallery,
+              maxWidth: 1920))!;
 
       fileName = path.basename(pickedImage.path);
       imageFile = File(pickedImage.path);
@@ -92,7 +99,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ])
         });
 
-        showToast('Image added to portfolio!');
+        showToast(isVideo
+            ? 'Video added to portfolio!'
+            : 'Image added to portfolio!');
 
         Navigator.of(context).pop();
       } on firebase_storage.FirebaseException catch (error) {
@@ -324,7 +333,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     IconButton(
                                       onPressed: () {
                                         uploadPicture(
-                                            'gallery', data['job'][i]);
+                                            'gallery',
+                                            data['job'][i],
+                                            data['job'][i] == 'Videographer' ||
+                                                data['job'][i] == 'Editor' ||
+                                                data['job'][i] ==
+                                                    'Cinematographer' ||
+                                                data['job'][i] == 'Writer' ||
+                                                data['job'][i] == 'Director');
                                       },
                                       icon: const Icon(
                                         Icons.add,

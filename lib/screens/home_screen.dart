@@ -18,6 +18,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final searchController = TextEditingController();
   String nameSearched = '';
 
@@ -32,6 +37,31 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> children = [
     const HomeScreen(),
   ];
+
+  List<String> dartVideographerItems = [
+    "Videographer",
+    "Editor",
+    "Photographer",
+    "Animator",
+    "Graphics Designer",
+    "3D Artist",
+    "Cinematographer",
+    "Writer",
+    "Director",
+    "Art Director",
+    "Production Designer",
+  ];
+
+  getData(String filter) {
+    return FirebaseFirestore.instance
+        .collection('Users')
+        .where('name',
+            isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
+        .where('name',
+            isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+        .where('job', arrayContains: filter)
+        .snapshots();
+  }
 
   final box = GetStorage();
   @override
@@ -250,19 +280,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                types('CAMERAMAN', 'Cameraman'),
-                const SizedBox(
-                  height: 10,
-                ),
-                types('EDITOR', 'Editor'),
-                const SizedBox(
-                  height: 10,
-                ),
-                types('GRAPHIC ARTIST', 'Graphic Artist'),
-                const SizedBox(
-                  height: 10,
-                ),
-                types('OTHERS', 'Others'),
+                for (int i = 0; i < dartVideographerItems.length; i++)
+                  Column(
+                    children: [
+                      types(dartVideographerItems[i], dartVideographerItems[i]),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -285,15 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 5,
         ),
         StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('Users')
-                .where('name',
-                    isGreaterThanOrEqualTo:
-                        toBeginningOfSentenceCase(nameSearched))
-                .where('name',
-                    isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
-                .where('job', arrayContains: filter)
-                .snapshots(),
+            stream: getData(filter),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
@@ -311,11 +329,20 @@ class _HomeScreenState extends State<HomeScreen> {
               }
 
               final data = snapshot.requireData;
-              return data.docs.isNotEmpty
+
+              final sortedData = List<QueryDocumentSnapshot>.from(data.docs);
+
+              sortedData.sort((a, b) {
+                final double priceA = a['dateTime'].toDate();
+                final double priceB = b['dateTime'].toDate();
+
+                return priceB.compareTo(priceA);
+              });
+              return sortedData.isNotEmpty
                   ? SizedBox(
                       height: 100,
                       child: ListView.builder(
-                        itemCount: data.docs.length,
+                        itemCount: sortedData.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
@@ -325,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ProfilePage(
-                                          id: data.docs[index].id,
+                                          id: sortedData[index].id,
                                         )));
                               },
                               child: Container(
@@ -346,15 +373,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: CircleAvatar(
                                           maxRadius: 25,
                                           minRadius: 25,
-                                          backgroundImage: NetworkImage(data
-                                              .docs[index]['profilePicture']),
+                                          backgroundImage: NetworkImage(
+                                              sortedData[index]
+                                                  ['profilePicture']),
                                         ),
                                       ),
                                       const SizedBox(
                                         height: 10,
                                       ),
                                       TextWidget(
-                                        text: data.docs[index]['name'],
+                                        text: sortedData[index]['name'],
                                         fontSize: 12,
                                         color: Colors.black,
                                       ),
