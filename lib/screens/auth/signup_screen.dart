@@ -596,7 +596,7 @@ class _SignupScreenState extends State<SignupScreen> {
         },
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
+        firstDate: DateTime(1800),
         lastDate: DateTime(2050));
 
     if (pickedDate != null) {
