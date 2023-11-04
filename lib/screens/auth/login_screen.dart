@@ -103,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextFieldWidget(
+                                    textColor: Colors.black,
                                     hint: 'Email',
                                     textCapitalization: TextCapitalization.none,
                                     inputType: TextInputType.emailAddress,

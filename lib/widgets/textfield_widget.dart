@@ -22,10 +22,12 @@ class TextFieldWidget extends StatefulWidget {
   final String? errorText;
   final bool? isRequred;
   bool? showErrorMsg;
+  final Color? textColor;
 
   TextFieldWidget(
       {super.key,
       this.hint = '',
+      this.textColor = Colors.white,
       this.isRequred = true,
       this.fontStyle = FontStyle.italic,
       this.label,
@@ -100,10 +102,10 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           height: widget.height,
           child: TextFormField(
             enabled: widget.isEnabled,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Regular',
               fontSize: 14,
-              color: Colors.white,
+              color: widget.textColor,
             ),
             textCapitalization: widget.textCapitalization!,
             keyboardType: widget.inputType,
