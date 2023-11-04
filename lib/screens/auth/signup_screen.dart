@@ -9,6 +9,7 @@ import 'package:media_tooker/utils/const.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/textfield_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:media_tooker/widgets/toast_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import '../../widgets/text_widget.dart';
@@ -557,18 +558,22 @@ class _SignupScreenState extends State<SignupScreen> {
                 radius: 100,
                 label: 'Done',
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AuthScreen(
-                            contactnumber: contactnumberController.text,
-                            job: selectedItems,
-                            imageDocumentFile: docImageURL,
-                            imageId: idImageURL,
-                            regType: widget.regType,
-                            address: addressController.text,
-                            birthday: dateController.text,
-                            gender: gender,
-                            name: nameController.text,
-                          )));
+                  if (idImageURL != '' && docImageURL != '') {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AuthScreen(
+                              contactnumber: contactnumberController.text,
+                              job: selectedItems,
+                              imageDocumentFile: docImageURL,
+                              imageId: idImageURL,
+                              regType: widget.regType,
+                              address: addressController.text,
+                              birthday: dateController.text,
+                              gender: gender,
+                              name: nameController.text,
+                            )));
+                  } else {
+                    showToast('Cannot procceed with missing information!');
+                  }
                 },
               ),
             ],

@@ -118,6 +118,77 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final box = GetStorage();
 
+  late String fileName1 = '';
+
+  late File imageFile1;
+
+  late String imageURL1 = '';
+
+  Future<void> uploadPicture1(String inputSource) async {
+    final picker = ImagePicker();
+    XFile pickedImage;
+    try {
+      pickedImage = (await picker.pickImage(
+          source: inputSource == 'camera'
+              ? ImageSource.camera
+              : ImageSource.gallery,
+          maxWidth: 1920))!;
+
+      fileName1 = path.basename(pickedImage.path);
+      imageFile1 = File(pickedImage.path);
+
+      try {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) => const Padding(
+            padding: EdgeInsets.only(left: 30, right: 30),
+            child: AlertDialog(
+                title: Row(
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Loading . . .',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'QRegular'),
+                ),
+              ],
+            )),
+          ),
+        );
+
+        await firebase_storage.FirebaseStorage.instance
+            .ref('Users/$fileName1')
+            .putFile(imageFile1);
+        imageURL1 = await firebase_storage.FirebaseStorage.instance
+            .ref('Users/$fileName1')
+            .getDownloadURL();
+
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({'profilePicture': imageURL1});
+
+        Navigator.of(context).pop();
+      } on firebase_storage.FirebaseException catch (error) {
+        if (kDebugMode) {
+          print(error);
+        }
+      }
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
@@ -147,15 +218,21 @@ class _ProfilePageState extends State<ProfilePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          maxRadius: 75,
-                          minRadius: 75,
-                          backgroundImage: NetworkImage(data['profilePicture']),
-                          child: const Align(
-                            alignment: Alignment.bottomRight,
-                            child: Icon(
-                              Icons.circle,
-                              color: Colors.green,
+                        GestureDetector(
+                          onTap: () {
+                            uploadPicture1('gallery');
+                          },
+                          child: CircleAvatar(
+                            maxRadius: 75,
+                            minRadius: 75,
+                            backgroundImage:
+                                NetworkImage(data['profilePicture']),
+                            child: const Align(
+                              alignment: Alignment.bottomRight,
+                              child: Icon(
+                                Icons.circle,
+                                color: Colors.green,
+                              ),
                             ),
                           ),
                         ),
