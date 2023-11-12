@@ -493,20 +493,22 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    FirebaseAuth.instance.currentUser!.uid != data.id
-                        ? ButtonWidget(
-                            color: primary,
-                            radius: 100,
-                            label: 'Book',
-                            onPressed: () {
-                              box.write('name', data['name']);
-                              box.write('job', data['job'][0]);
-                              box.write('id', data.id);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const BookPage()));
-                            },
-                          )
-                        : const SizedBox(),
+                    box.read('user') == 'Client'
+                        ? FirebaseAuth.instance.currentUser!.uid != data.id
+                            ? ButtonWidget(
+                                color: primary,
+                                radius: 100,
+                                label: 'Book',
+                                onPressed: () {
+                                  box.write('name', data['name']);
+                                  box.write('job', data['job'][0]);
+                                  box.write('id', data.id);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => const BookPage()));
+                                },
+                              )
+                            : const SizedBox()
+                        : const SizedBox()
                   ],
                 ),
               ),
