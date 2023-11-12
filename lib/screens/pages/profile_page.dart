@@ -380,15 +380,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextWidget(
-                            text: FirebaseAuth.instance.currentUser!.uid !=
-                                    data.id
-                                ? 'Portfolio'
-                                : 'My portfolio:',
-                            fontSize: 18,
-                            color: primary,
-                            fontFamily: 'Bold',
-                          ),
+                          box.read('user') == 'Client'
+                              ? const SizedBox()
+                              : TextWidget(
+                                  text:
+                                      FirebaseAuth.instance.currentUser!.uid !=
+                                              data.id
+                                          ? 'Portfolio'
+                                          : 'My portfolio:',
+                                  fontSize: 18,
+                                  color: primary,
+                                  fontFamily: 'Bold',
+                                ),
                           const SizedBox(
                             height: 10,
                           ),
@@ -407,23 +410,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.white,
                                       fontFamily: 'Bold',
                                     ),
-                                    IconButton(
-                                      onPressed: () {
-                                        uploadPicture(
-                                            'gallery',
-                                            data['job'][i],
-                                            data['job'][i] == 'Videographer' ||
-                                                data['job'][i] == 'Editor' ||
-                                                data['job'][i] ==
-                                                    'Cinematographer' ||
-                                                data['job'][i] == 'Writer' ||
-                                                data['job'][i] == 'Director');
-                                      },
-                                      icon: const Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                    FirebaseAuth.instance.currentUser!.uid !=
+                                            data.id
+                                        ? const SizedBox()
+                                        : IconButton(
+                                            onPressed: () {
+                                              uploadPicture(
+                                                  'gallery',
+                                                  data['job'][i],
+                                                  data['job'][i] ==
+                                                          'Videographer' ||
+                                                      data['job'][i] ==
+                                                          'Editor' ||
+                                                      data['job'][i] ==
+                                                          'Cinematographer' ||
+                                                      data['job'][i] ==
+                                                          'Writer' ||
+                                                      data['job'][i] ==
+                                                          'Director');
+                                            },
+                                            icon: const Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                   ],
                                 ),
                                 for (int i = 0;

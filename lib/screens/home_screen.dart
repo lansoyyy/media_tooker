@@ -67,16 +67,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const MessagesPage()));
-        },
-        backgroundColor: primary,
-        child: const Icon(
-          Icons.message_outlined,
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.of(context).push(
+      //         MaterialPageRoute(builder: (context) => const MessagesPage()));
+      //   },
+      //   backgroundColor: primary,
+      //   child: const Icon(
+      //     Icons.message_outlined,
+      //   ),
+      // ),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(

@@ -75,14 +75,15 @@ class _MessagesPageState extends State<MessagesPage> {
           ),
           StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
-                  .collection('Users')
-                  .where('name',
-                      isGreaterThanOrEqualTo:
-                          toBeginningOfSentenceCase(nameSearched))
-                  .where('name',
-                      isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
-                  .where('type',
-                      whereIn: ['Production', 'Independent']).snapshots(),
+                  .collection('Messages')
+                  .where('userId',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  // .where('name',
+                  //     isGreaterThanOrEqualTo:
+                  //         toBeginningOfSentenceCase(nameSearched))
+                  // .where('name',
+                  //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+                  .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -100,30 +101,35 @@ class _MessagesPageState extends State<MessagesPage> {
                 }
 
                 final data = snapshot.requireData;
-                return SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    itemCount: data.docs.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChatPage(
-                                      userData: data.docs[index].id,
-                                    )));
-                          },
-                          child: CircleAvatar(
-                            maxRadius: 35,
-                            minRadius: 35,
-                            backgroundImage: NetworkImage(
-                                data.docs[index]['profilePicture']),
+                print(data.docs.length);
+                return Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      itemCount: data.docs.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ChatPage(
+                                        userData: data.docs[index]
+                                            ['freelancerId'],
+                                      )));
+                            },
+                            child: CircleAvatar(
+                              maxRadius: 35,
+                              minRadius: 35,
+                              backgroundImage: NetworkImage(
+                                  data.docs[index]['freelancerProfile']),
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 );
               }),
