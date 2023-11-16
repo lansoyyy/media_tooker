@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:media_tooker/screens/pages/freelancers/bookings_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 
 import '../../widgets/text_widget.dart';
@@ -82,6 +83,10 @@ class _NotifPageState extends State<NotifPage> {
                       },
                       itemBuilder: (context, index) {
                         return ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const BookingsPage()));
+                          },
                           leading: const CircleAvatar(
                             maxRadius: 30,
                             minRadius: 30,
