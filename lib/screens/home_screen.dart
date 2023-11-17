@@ -55,10 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
   getData(String filter) {
     return FirebaseFirestore.instance
         .collection('Users')
-        .where('name',
-            isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
-        .where('name',
-            isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
         .where('job', arrayContains: filter)
         .snapshots();
   }
@@ -280,15 +276,127 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                for (int i = 0; i < dartVideographerItems.length; i++)
-                  Column(
-                    children: [
-                      types(dartVideographerItems[i], dartVideographerItems[i]),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  ),
+                if (nameSearched != '')
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('Users')
+                          .where('job', arrayContains: nameSearched)
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          print('error');
+                          return const Center(child: Text('Error'));
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 50),
+                            child: Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.black,
+                            )),
+                          );
+                        }
+
+                        final data = snapshot.requireData;
+
+                        final sortedData =
+                            List<QueryDocumentSnapshot>.from(data.docs);
+
+                        sortedData.sort((a, b) {
+                          final double priceA = a['dateTime'].toDate();
+                          final double priceB = b['dateTime'].toDate();
+
+                          return priceB.compareTo(priceA);
+                        });
+                        return sortedData.isNotEmpty
+                            ? SizedBox(
+                                height: 100,
+                                child: ListView.builder(
+                                  itemCount: sortedData.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          left: index == 0 ? 0 : 5, right: 5),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProfilePage(
+                                                        id: sortedData[index]
+                                                            .id,
+                                                      )));
+                                        },
+                                        child: Container(
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Center(
+                                                  child: CircleAvatar(
+                                                    maxRadius: 25,
+                                                    minRadius: 25,
+                                                    backgroundImage:
+                                                        NetworkImage(sortedData[
+                                                                index]
+                                                            ['profilePicture']),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                TextWidget(
+                                                  text: sortedData[index]
+                                                      ['name'],
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            : Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20, bottom: 20),
+                                  child: TextWidget(
+                                    text: 'No available',
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                      }),
+                if (nameSearched == '')
+                  for (int i = 0; i < dartVideographerItems.length; i++)
+                    Column(
+                      children: [
+                        types(
+                            dartVideographerItems[i], dartVideographerItems[i]),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
               ],
             ),
           ),

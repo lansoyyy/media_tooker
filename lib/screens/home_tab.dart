@@ -169,23 +169,36 @@ class _HomeTabState extends State<HomeTab> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             for (int i = 0; i < data['job'].length; i++)
-                              ListTile(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  uploadPicture(
-                                      'gallery',
-                                      data['job'][i],
-                                      data['job'][i] == 'Videographer' ||
-                                          data['job'][i] == 'Editor' ||
-                                          data['job'][i] == 'Cinematographer' ||
-                                          data['job'][i] == 'Writer' ||
-                                          data['job'][i] == 'Director');
-                                },
-                                leading: const Icon(Icons.add),
-                                title: TextWidget(
-                                  text: data['job'][i],
-                                  fontSize: 14,
-                                  color: Colors.black,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 5, bottom: 5),
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    uploadPicture(
+                                        'gallery',
+                                        data['job'][i],
+                                        data['job'][i] == 'Videographer' ||
+                                            data['job'][i] == 'Editor' ||
+                                            data['job'][i] ==
+                                                'Cinematographer' ||
+                                            data['job'][i] == 'Writer' ||
+                                            data['job'][i] == 'Director');
+                                  },
+                                  title: Column(
+                                    children: [
+                                      TextWidget(
+                                        text: data['job'][i],
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                      Icon(
+                                        Icons.add,
+                                        size: 32,
+                                        color: primary,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                           ],

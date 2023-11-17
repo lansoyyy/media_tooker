@@ -227,11 +227,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             minRadius: 75,
                             backgroundImage:
                                 NetworkImage(data['profilePicture']),
-                            child: const Align(
-                              alignment: Alignment.bottomRight,
-                              child: Icon(
-                                Icons.circle,
-                                color: Colors.green,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black,
+                              ),
+                              child: const Align(
+                                alignment: Alignment.bottomRight,
+                                child: Icon(
+                                  Icons.add_circle_rounded,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -410,30 +416,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.white,
                                       fontFamily: 'Bold',
                                     ),
-                                    FirebaseAuth.instance.currentUser!.uid !=
-                                            data.id
-                                        ? const SizedBox()
-                                        : IconButton(
-                                            onPressed: () {
-                                              uploadPicture(
-                                                  'gallery',
-                                                  data['job'][i],
-                                                  data['job'][i] ==
-                                                          'Videographer' ||
-                                                      data['job'][i] ==
-                                                          'Editor' ||
-                                                      data['job'][i] ==
-                                                          'Cinematographer' ||
-                                                      data['job'][i] ==
-                                                          'Writer' ||
-                                                      data['job'][i] ==
-                                                          'Director');
-                                            },
-                                            icon: const Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                            ),
-                                          ),
+                                    // FirebaseAuth.instance.currentUser!.uid !=
+                                    //         data.id
+                                    //     ? const SizedBox()
+                                    //     : IconButton(
+                                    //         onPressed: () {
+                                    //           uploadPicture(
+                                    //               'gallery',
+                                    //               data['job'][i],
+                                    //               data['job'][i] ==
+                                    //                       'Videographer' ||
+                                    //                   data['job'][i] ==
+                                    //                       'Editor' ||
+                                    //                   data['job'][i] ==
+                                    //                       'Cinematographer' ||
+                                    //                   data['job'][i] ==
+                                    //                       'Writer' ||
+                                    //                   data['job'][i] ==
+                                    //                       'Director');
+                                    //         },
+                                    //         icon: const Icon(
+                                    //           Icons.add,
+                                    //           color: Colors.white,
+                                    //         ),
+                                    //       ),
                                   ],
                                 ),
                                 for (int i = 0;
