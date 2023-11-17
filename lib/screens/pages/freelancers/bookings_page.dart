@@ -55,6 +55,7 @@ class _BookingsPageState extends State<BookingsPage> {
                 .collection('Bookings')
                 .where('freelancerId',
                     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                .where('status', isEqualTo: 'Pending')
                 .orderBy('dateTime', descending: true)
                 .snapshots(),
             builder:
