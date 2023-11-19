@@ -220,7 +220,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            uploadPicture1('gallery');
+
+                          if(   FirebaseAuth.instance.currentUser!.uid ==
+                                            data.id) {
+                                                    uploadPicture1('gallery');
+
+                                            }
+                      
                           },
                           child: CircleAvatar(
                             maxRadius: 75,
