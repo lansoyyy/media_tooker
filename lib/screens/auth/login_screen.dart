@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_tooker/screens/auth/signup_selection_screen.dart';
 import 'package:media_tooker/screens/home_screen.dart';
+import 'package:media_tooker/screens/home_tab.dart';
 import 'package:media_tooker/services/add_user.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
@@ -42,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       addUser(user!.displayName, '', user.email, 'Client', user.uid, '', [],
           user.phoneNumber);
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+          MaterialPageRoute(builder: (context) => const HomeTab()));
     } on FirebaseAuthException catch (e) {
       print(e);
     }
@@ -285,7 +286,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await FirebaseAuth.instance.signInWithEmailAndPassword(
               email: emailController.text, password: passwordController.text);
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+              MaterialPageRoute(builder: (context) => const HomeTab()));
         } else {
           showToast('Account not yet verified!');
           FirebaseAuth.instance.signOut();

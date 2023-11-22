@@ -220,33 +220,32 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-
-                          if(   FirebaseAuth.instance.currentUser!.uid ==
-                                            data.id) {
-                                                    uploadPicture1('gallery');
-
-                                            }
-                      
+                            if (FirebaseAuth.instance.currentUser!.uid ==
+                                data.id) {
+                              uploadPicture1('gallery');
+                            }
                           },
                           child: CircleAvatar(
-                            maxRadius: 75,
-                            minRadius: 75,
-                            backgroundImage:
-                                NetworkImage(data['profilePicture']),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.black,
-                              ),
-                              child: const Align(
-                                alignment: Alignment.bottomRight,
-                                child: Icon(
-                                  Icons.add_circle_rounded,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
+                              maxRadius: 75,
+                              minRadius: 75,
+                              backgroundImage:
+                                  NetworkImage(data['profilePicture']),
+                              child: FirebaseAuth.instance.currentUser!.uid ==
+                                      data.id
+                                  ? Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.black,
+                                      ),
+                                      child: const Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Icon(
+                                          Icons.add_circle_rounded,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox()),
                         ),
                       ],
                     ),

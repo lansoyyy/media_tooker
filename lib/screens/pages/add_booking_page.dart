@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:media_tooker/screens/home_screen.dart';
+import 'package:media_tooker/screens/home_tab.dart';
 import 'package:media_tooker/services/add_booking.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
@@ -301,7 +301,7 @@ class _AddBookingPageState extends State<AddBookingPage> {
 
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => const HomeScreen()));
+                                  builder: (context) => const HomeTab()));
                         },
                       );
                     }),
