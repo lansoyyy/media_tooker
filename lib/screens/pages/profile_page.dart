@@ -574,35 +574,37 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context) {
         return Dialog(
           child: SizedBox(
-            height: 500,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.close,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    image: DecorationImage(
-                        image: NetworkImage(
-                          image,
-                        ),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(5),
+                  Container(
+                    height: 300,
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      image: DecorationImage(
+                          image: NetworkImage(
+                            image,
+                          ),
+                          fit: BoxFit.cover),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
