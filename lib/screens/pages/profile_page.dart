@@ -18,6 +18,8 @@ import 'package:image_picker/image_picker.dart';
 
 import 'freelancers/bookings_page.dart';
 
+enum UrlType { IMAGE, VIDEO, UNKNOWN }
+
 class ProfilePage extends StatefulWidget {
   String id;
 
@@ -407,49 +409,48 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 10,
                           ),
                           for (int i = 0; i < data['job'].length; i++)
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextWidget(
-                                      text: data['job'][i],
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      fontFamily: 'Bold',
-                                    ),
-                                    // FirebaseAuth.instance.currentUser!.uid !=
-                                    //         data.id
-                                    //     ? const SizedBox()
-                                    //     : IconButton(
-                                    //         onPressed: () {
-                                    //           uploadPicture(
-                                    //               'gallery',
-                                    //               data['job'][i],
-                                    //               data['job'][i] ==
-                                    //                       'Videographer' ||
-                                    //                   data['job'][i] ==
-                                    //                       'Editor' ||
-                                    //                   data['job'][i] ==
-                                    //                       'Cinematographer' ||
-                                    //                   data['job'][i] ==
-                                    //                       'Writer' ||
-                                    //                   data['job'][i] ==
-                                    //                       'Director');
-                                    //         },
-                                    //         icon: const Icon(
-                                    //           Icons.add,
-                                    //           color: Colors.white,
-                                    //         ),
-                                    //       ),
-                                  ],
-                                ),
-                                for (int i = 0;
-                                    i < data['portfolio'].length;
-                                    i++)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5, bottom: 5),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextWidget(
+                                        text: data['job'][i],
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontFamily: 'Bold',
+                                      ),
+                                      // FirebaseAuth.instance.currentUser!.uid !=
+                                      //         data.id
+                                      //     ? const SizedBox()
+                                      //     : IconButton(
+                                      //         onPressed: () {
+                                      //           uploadPicture(
+                                      //               'gallery',
+                                      //               data['job'][i],
+                                      //               data['job'][i] ==
+                                      //                       'Videographer' ||
+                                      //                   data['job'][i] ==
+                                      //                       'Editor' ||
+                                      //                   data['job'][i] ==
+                                      //                       'Cinematographer' ||
+                                      //                   data['job'][i] ==
+                                      //                       'Writer' ||
+                                      //                   data['job'][i] ==
+                                      //                       'Director');
+                                      //         },
+                                      //         icon: const Icon(
+                                      //           Icons.add,
+                                      //           color: Colors.white,
+                                      //         ),
+                                      //       ),
+                                    ],
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 20, right: 20, top: 10),
@@ -459,44 +460,83 @@ class _ProfilePageState extends State<ProfilePage> {
                                         itemCount: data['portfolio'].length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
-                                          return data['portfolio'][index] ==
-                                                  data['job'][i]
+                                          return data['job'][i] ==
+                                                  data['portfolio'][index]
+                                                      ['type']
                                               ? Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: index == 0 ? 0 : 5,
-                                                      right: 5),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      portfolioDialog(
-                                                          context,
-                                                          data['portfolio']
-                                                              [index]['img']);
-                                                    },
-                                                    child: Container(
-                                                      height: 100,
-                                                      width: 100,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(
+                                                    left: index == 0 ? 0 : 5,
+                                                    right: 5,
+                                                  ),
+                                                  child: getUrlType(
                                                               data['portfolio']
                                                                       [index]
-                                                                  ['img'],
+                                                                  ['img']) ==
+                                                          UrlType.IMAGE
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            portfolioDialog(
+                                                                context,
+                                                                data['portfolio']
+                                                                        [index]
+                                                                    ['img']);
+                                                          },
+                                                          child: Container(
+                                                            height: 100,
+                                                            width: 100,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              image:
+                                                                  DecorationImage(
+                                                                      image:
+                                                                          NetworkImage(
+                                                                        data['portfolio'][index]
+                                                                            [
+                                                                            'img'],
+                                                                      ),
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
                                                             ),
-                                                            fit: BoxFit.cover),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          height: 100,
+                                                          width: 100,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                          ),
+                                                          child: IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await launchUrl(Uri.parse(
+                                                                  data['portfolio']
+                                                                          [
+                                                                          index]
+                                                                      ['img']));
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.download,
+                                                            ),
+                                                          ),
+                                                        ))
                                               : const SizedBox();
                                         },
                                       ),
                                     ),
                                   )
-                              ],
+                                ],
+                              ),
                             ),
                         ],
                       ),
@@ -658,5 +698,18 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+  }
+
+  UrlType getUrlType(String url) {
+    Uri uri = Uri.parse(url);
+    String typeString = uri.path.substring(uri.path.length - 3).toLowerCase();
+    if (typeString == "jpg") {
+      return UrlType.IMAGE;
+    }
+    if (typeString == "mp4") {
+      return UrlType.VIDEO;
+    } else {
+      return UrlType.UNKNOWN;
+    }
   }
 }
