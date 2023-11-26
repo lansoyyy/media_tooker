@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_tooker/screens/auth/signup_selection_screen.dart';
 import 'package:media_tooker/screens/home_screen.dart';
@@ -274,6 +275,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool isVerified = false;
 
+  final box = GetStorage();
+
   login(context) async {
     try {
       FirebaseFirestore.instance
@@ -283,6 +286,11 @@ class _LoginScreenState extends State<LoginScreen> {
           .then((QuerySnapshot querySnapshot) async {
         if (querySnapshot.docs[0]['isVerified']) {
           showToast('Logged in succesfully!');
+
+
+          box.write('user', querySnapshot.docs[0]['type']);
+
+          
           await FirebaseAuth.instance.signInWithEmailAndPassword(
               email: emailController.text, password: passwordController.text);
           Navigator.of(context).pushReplacement(

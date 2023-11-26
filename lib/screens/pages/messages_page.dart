@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:media_tooker/screens/pages/chat_page.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
 import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
@@ -16,6 +17,8 @@ class _MessagesPageState extends State<MessagesPage> {
   final searchController = TextEditingController();
 
   String nameSearched = '';
+
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +77,16 @@ class _MessagesPageState extends State<MessagesPage> {
             ),
           ),
           StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
+              stream: box.read('user')  == 'Client' ? FirebaseFirestore.instance
                   .collection('Messages')
                   .where('userId',
                       isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                  // .where('name',
-                  //     isGreaterThanOrEqualTo:
-                  //         toBeginningOfSentenceCase(nameSearched))
-                  // .where('name',
-                  //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+                
+                  .snapshots() :  FirebaseFirestore.instance
+                  .collection('Messages')
+                  .where('freelancerId',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -116,15 +120,16 @@ class _MessagesPageState extends State<MessagesPage> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ChatPage(
-                                        userData: data.docs[index]
-                                            ['freelancerId'],
+                                        userData:  box.read('user')  == 'Client' ? data.docs[index]
+                                            ['freelancerId'] :  data.docs[index]
+                                            ['userId'],
                                       )));
                             },
                             child: CircleAvatar(
                               maxRadius: 35,
                               minRadius: 35,
                               backgroundImage: NetworkImage(
-                                  data.docs[index]['freelancerProfile']),
+                              box.read('user')  == 'Client' ?     data.docs[index]['freelancerProfile'] : data.docs[index]['userProfile']),
                             ),
                           ),
                         );
@@ -140,9 +145,14 @@ class _MessagesPageState extends State<MessagesPage> {
             ),
           ),
           StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
+              stream: box.read('user')  == 'Client' ? FirebaseFirestore.instance
                   .collection('Messages')
                   .where('userId',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .orderBy('dateTime', descending: true)
+                  .snapshots() :  FirebaseFirestore.instance
+                  .collection('Messages')
+                  .where('freelancerId',
                       isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                   .orderBy('dateTime', descending: true)
                   .snapshots(),
@@ -175,15 +185,16 @@ class _MessagesPageState extends State<MessagesPage> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ChatPage(
-                                        userData: data.docs[index]
-                                            ['freelancerId'],
+                                         userData:  box.read('user')  == 'Client' ? data.docs[index]
+                                            ['freelancerId'] :  data.docs[index]
+                                            ['userId'],
                                       )));
                             },
                             leading: CircleAvatar(
                               maxRadius: 40,
                               minRadius: 40,
                               backgroundImage: NetworkImage(
-                                  data.docs[index]['freelancerProfile']),
+                                 box.read('user')  == 'Client' ? data.docs[index]['freelancerProfile'] :  data.docs[index]['userProfile']),
                               child: const Align(
                                 alignment: Alignment.bottomRight,
                                 child: Icon(
@@ -193,7 +204,7 @@ class _MessagesPageState extends State<MessagesPage> {
                               ),
                             ),
                             title: TextWidget(
-                              text: data.docs[index]['freelancerName'],
+                              text:  box.read('user')  == 'Client' ?data.docs[index]['freelancerName'] : data.docs[index]['userName'],
                               fontSize: 24,
                               color: Colors.white,
                               fontFamily: 'Bold',

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:media_tooker/services/add_messages.dart';
 import 'package:media_tooker/utils/colors.dart';
@@ -22,6 +23,8 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final msgController = TextEditingController();
 
+  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
@@ -34,10 +37,13 @@ class _ChatPageState extends State<ChatPage> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
 
-    final Stream<DocumentSnapshot> chatData = FirebaseFirestore.instance
+    final Stream<DocumentSnapshot> chatData = box.read('user') == 'Client' ?  FirebaseFirestore.instance
         .collection('Messages')
-        .doc(FirebaseAuth.instance.currentUser!.uid + widget.userData!)
-        .snapshots();
+        .doc( FirebaseAuth.instance.currentUser!.uid + widget.userData!)
+        .snapshots() : FirebaseFirestore.instance
+        .collection('Messages')
+        .doc(widget.userData! + FirebaseAuth.instance.currentUser!.uid)
+        .snapshots()  ;
     return Scaffold(
       backgroundColor: Colors.black,
       body: StreamBuilder<DocumentSnapshot>(
@@ -154,8 +160,9 @@ class _ChatPageState extends State<ChatPage> {
                                                 child: CircleAvatar(
                                                   minRadius: 15,
                                                   maxRadius: 15,
-                                                  backgroundImage: NetworkImage(
-                                                      data['profilePicture']),
+                                                  backgroundImage: box.read('user') == 'Client' ?  NetworkImage(
+                                                      data['freelancerProfile']) :   NetworkImage(
+                                                      data['userProfile']),
                                                 ),
                                               )
                                             : const SizedBox(),
@@ -270,12 +277,16 @@ class _ChatPageState extends State<ChatPage> {
                                 dynamic myData = snapshot.data;
                                 return IconButton(
                                   onPressed: () async {
+
+                                    print(box.read('user'));
                                     try {
                                       await FirebaseFirestore.instance
                                           .collection('Messages')
-                                          .doc(FirebaseAuth
+                                          .doc( box.read('user') == 'Client' ? FirebaseAuth
                                                   .instance.currentUser!.uid +
-                                              widget.userData!)
+                                              widget.userData! :  
+                                              widget.userData! + FirebaseAuth
+                                                  .instance.currentUser!.uid)
                                           .update({
                                         'lastId': FirebaseAuth
                                             .instance.currentUser!.uid,
