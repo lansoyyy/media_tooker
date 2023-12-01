@@ -232,22 +232,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               minRadius: 75,
                               backgroundImage:
                                   NetworkImage(data['profilePicture']),
-                              child: FirebaseAuth.instance.currentUser!.uid ==
-                                      data.id
-                                  ? Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.black,
-                                      ),
-                                      child: const Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Icon(
-                                          Icons.add_circle_rounded,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox()),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Icon(
+                                    Icons.add_circle_rounded,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )),
                         ),
                       ],
                     ),
