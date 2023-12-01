@@ -6,7 +6,6 @@ import 'package:media_tooker/screens/pages/freelancers/task_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/button_widget.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../../services/add_notif.dart';
 import '../../../widgets/toast_widget.dart';
@@ -55,7 +54,6 @@ class _BookingsPageState extends State<BookingsPage> {
                 .collection('Bookings')
                 .where('freelancerId',
                     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                .where('status', isEqualTo: 'Pending')
                 .orderBy('dateTime', descending: true)
                 .snapshots(),
             builder:
