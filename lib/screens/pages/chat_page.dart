@@ -37,13 +37,15 @@ class _ChatPageState extends State<ChatPage> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
 
-    final Stream<DocumentSnapshot> chatData = box.read('user') == 'Client' ?  FirebaseFirestore.instance
-        .collection('Messages')
-        .doc( FirebaseAuth.instance.currentUser!.uid + widget.userData!)
-        .snapshots() : FirebaseFirestore.instance
-        .collection('Messages')
-        .doc(widget.userData! + FirebaseAuth.instance.currentUser!.uid)
-        .snapshots()  ;
+    final Stream<DocumentSnapshot> chatData = box.read('user') == 'Client'
+        ? FirebaseFirestore.instance
+            .collection('Messages')
+            .doc(FirebaseAuth.instance.currentUser!.uid + widget.userData!)
+            .snapshots()
+        : FirebaseFirestore.instance
+            .collection('Messages')
+            .doc(widget.userData! + FirebaseAuth.instance.currentUser!.uid)
+            .snapshots();
     return Scaffold(
       backgroundColor: Colors.black,
       body: StreamBuilder<DocumentSnapshot>(
@@ -143,111 +145,132 @@ class _ChatPageState extends State<ChatPage> {
                                   itemCount:
                                       messages.isNotEmpty ? messages.length : 0,
                                   itemBuilder: ((context, index) {
-                                    return Row(
-                                      mainAxisAlignment: messages[index]
-                                                  ['sender'] ==
-                                              FirebaseAuth
-                                                  .instance.currentUser!.uid
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                      children: [
-                                        messages[index]['sender'] !=
+                                    return Container(
+                                      child: Row(
+                                        mainAxisAlignment: messages[index]
+                                                    ['sender'] ==
                                                 FirebaseAuth
                                                     .instance.currentUser!.uid
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5),
-                                                child: CircleAvatar(
-                                                  minRadius: 15,
-                                                  maxRadius: 15,
-                                                  backgroundImage: box.read('user') == 'Client' ?  NetworkImage(
-                                                      data['freelancerProfile']) :   NetworkImage(
-                                                      data['userProfile']),
-                                                ),
-                                              )
-                                            : const SizedBox(),
-                                        Column(
-                                          crossAxisAlignment: messages[index]
-                                                      ['sender'] ==
+                                            ? MainAxisAlignment.end
+                                            : MainAxisAlignment.start,
+                                        children: [
+                                          messages[index]['sender'] !=
                                                   FirebaseAuth
                                                       .instance.currentUser!.uid
-                                              ? CrossAxisAlignment.end
-                                              : CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              margin:
-                                                  const EdgeInsets.symmetric(
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5),
+                                                  child: CircleAvatar(
+                                                    minRadius: 15,
+                                                    maxRadius: 15,
+                                                    backgroundImage: box
+                                                                .read('user') ==
+                                                            'Client'
+                                                        ? NetworkImage(data[
+                                                            'freelancerProfile'])
+                                                        : NetworkImage(data[
+                                                            'userProfile']),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
+                                          Container(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  messages[index]
+                                                              ['sender'] ==
+                                                          FirebaseAuth.instance
+                                                              .currentUser!.uid
+                                                      ? CrossAxisAlignment.end
+                                                      : CrossAxisAlignment
+                                                          .start,
+                                              children: [
+                                                Container(
+                                                  width: 175,
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
                                                       vertical: 10.0,
                                                       horizontal: 10.0),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
                                                       vertical: 10.0,
                                                       horizontal: 15.0),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      const Radius.circular(
-                                                          20.0),
-                                                  topRight:
-                                                      const Radius.circular(
-                                                          20.0),
-                                                  bottomLeft: messages[index]
-                                                              ['sender'] ==
-                                                          FirebaseAuth.instance
-                                                              .currentUser!.uid
-                                                      ? const Radius.circular(
-                                                          20.0)
-                                                      : const Radius.circular(
-                                                          0.0),
-                                                  bottomRight: messages[index]
-                                                              ['sender'] ==
-                                                          FirebaseAuth.instance
-                                                              .currentUser!.uid
-                                                      ? const Radius.circular(
-                                                          0.0)
-                                                      : const Radius.circular(
-                                                          20.0),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                messages[index]['message'],
-                                                style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 16.0,
-                                                    fontFamily: 'QRegular'),
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: Text(
-                                                DateFormat.jm().format(
-                                                    messages[index]['dateTime']
-                                                        .toDate()),
-                                                style: const TextStyle(
+                                                  decoration: BoxDecoration(
                                                     color: Colors.white,
-                                                    fontSize: 11.0,
-                                                    fontFamily: 'QRegular'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        messages[index]['sender'] ==
-                                                FirebaseAuth
-                                                    .instance.currentUser!.uid
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 5),
-                                                child: CircleAvatar(
-                                                  minRadius: 15,
-                                                  maxRadius: 15,
-                                                  backgroundImage: NetworkImage(
-                                                    data['userProfile'],
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          const Radius.circular(
+                                                              20.0),
+                                                      topRight:
+                                                          const Radius.circular(
+                                                              20.0),
+                                                      bottomLeft: messages[
+                                                                      index]
+                                                                  ['sender'] ==
+                                                              FirebaseAuth
+                                                                  .instance
+                                                                  .currentUser!
+                                                                  .uid
+                                                          ? const Radius
+                                                              .circular(20.0)
+                                                          : const Radius
+                                                              .circular(0.0),
+                                                      bottomRight: messages[
+                                                                      index]
+                                                                  ['sender'] ==
+                                                              FirebaseAuth
+                                                                  .instance
+                                                                  .currentUser!
+                                                                  .uid
+                                                          ? const Radius
+                                                              .circular(0.0)
+                                                          : const Radius
+                                                              .circular(20.0),
+                                                    ),
+                                                  ),
+                                                  child: TextWidget(
+                                                    text: messages[index]
+                                                        ['message'],
+                                                    fontSize: 16,
                                                   ),
                                                 ),
-                                              )
-                                            : const SizedBox(),
-                                      ],
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: Text(
+                                                    DateFormat.jm().format(
+                                                        messages[index]
+                                                                ['dateTime']
+                                                            .toDate()),
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 11.0,
+                                                        fontFamily: 'QRegular'),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          messages[index]['sender'] ==
+                                                  FirebaseAuth
+                                                      .instance.currentUser!.uid
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 5),
+                                                  child: CircleAvatar(
+                                                    minRadius: 15,
+                                                    maxRadius: 15,
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                      data['userProfile'],
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
+                                        ],
+                                      ),
                                     );
                                   })),
                             ),
@@ -277,16 +300,17 @@ class _ChatPageState extends State<ChatPage> {
                                 dynamic myData = snapshot.data;
                                 return IconButton(
                                   onPressed: () async {
-
                                     print(box.read('user'));
                                     try {
                                       await FirebaseFirestore.instance
                                           .collection('Messages')
-                                          .doc( box.read('user') == 'Client' ? FirebaseAuth
-                                                  .instance.currentUser!.uid +
-                                              widget.userData! :  
-                                              widget.userData! + FirebaseAuth
-                                                  .instance.currentUser!.uid)
+                                          .doc(box.read('user') == 'Client'
+                                              ? FirebaseAuth.instance
+                                                      .currentUser!.uid +
+                                                  widget.userData!
+                                              : widget.userData! +
+                                                  FirebaseAuth.instance
+                                                      .currentUser!.uid)
                                           .update({
                                         'lastId': FirebaseAuth
                                             .instance.currentUser!.uid,
