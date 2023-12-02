@@ -49,12 +49,14 @@ class _NotifPageState extends State<NotifPage> {
                         .collection('Notifs')
                         .where('userId',
                             isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .where('isUser', isEqualTo: true)
                         .orderBy('dateTime', descending: true)
                         .snapshots()
                     : FirebaseFirestore.instance
                         .collection('Notifs')
                         .where('freelancerId',
                             isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .where('isUser', isEqualTo: false)
                         .orderBy('dateTime', descending: true)
                         .snapshots(),
                 builder: (BuildContext context,

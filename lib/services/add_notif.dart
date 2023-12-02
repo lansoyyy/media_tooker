@@ -10,7 +10,8 @@ Future addNotifUser(name, freelancerId) async {
     'id': docUser.id,
     'freelancerId': freelancerId,
     'userId': FirebaseAuth.instance.currentUser!.uid,
-    'isSeen': false
+    'isSeen': false,
+    'isUser': false,
   };
 
   await docUser.set(json);
@@ -25,7 +26,8 @@ Future addNotifFreelancer(name, userId) async {
     'id': docUser.id,
     'userId': userId,
     'freelancerId': FirebaseAuth.instance.currentUser!.uid,
-    'isSeen': false
+    'isSeen': false,
+    'isUser': true,
   };
 
   await docUser.set(json);
