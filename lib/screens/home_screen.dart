@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:media_tooker/screens/pages/messages_page.dart';
 import 'package:media_tooker/screens/pages/profile_page.dart';
 import 'package:media_tooker/utils/colors.dart';
 import 'package:media_tooker/widgets/text_widget.dart';
-import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
 import 'auth/login_screen.dart';
 
@@ -448,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
               });
               return sortedData.isNotEmpty
                   ? SizedBox(
-                      height: 100,
+                      height: 120,
                       child: ListView.builder(
                         itemCount: sortedData.length,
                         scrollDirection: Axis.horizontal,

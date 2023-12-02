@@ -53,7 +53,7 @@ class TaskPage extends StatelessWidget {
                               .toString())
                       .where('freelancerId',
                           isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                      .where('status', isEqualTo: 'Accepted')
+                      // .where('isCompleted', isEqualTo: 'Pending')
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {

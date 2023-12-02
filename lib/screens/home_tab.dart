@@ -138,78 +138,81 @@ class _HomeTabState extends State<HomeTab> {
     return Scaffold(
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        backgroundColor: primary,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: StreamBuilder<DocumentSnapshot>(
-                    stream: userData,
-                    builder:
-                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (!snapshot.hasData) {
-                        return const SizedBox();
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                            child: Text('Something went wrong'));
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const SizedBox();
-                      }
-                      dynamic data = snapshot.data;
-                      return SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            for (int i = 0; i < data['job'].length; i++)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 5, bottom: 5),
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    uploadPicture(
-                                        'gallery',
-                                        data['job'][i],
-                                        data['job'][i] == 'Videographer' ||
-                                            data['job'][i] == 'Editor' ||
-                                            data['job'][i] ==
-                                                'Cinematographer' ||
-                                            data['job'][i] == 'Writer' ||
-                                            data['job'][i] == 'Director');
-                                  },
-                                  title: Column(
-                                    children: [
-                                      TextWidget(
-                                        text: data['job'][i],
-                                        fontSize: 14,
-                                        color: Colors.black,
+      floatingActionButton: box.read('user') == 'Client'
+          ? const SizedBox()
+          : FloatingActionButton(
+              mini: true,
+              backgroundColor: primary,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: StreamBuilder<DocumentSnapshot>(
+                          stream: userData,
+                          builder: (context,
+                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return const SizedBox();
+                            } else if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text('Something went wrong'));
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox();
+                            }
+                            dynamic data = snapshot.data;
+                            return SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  for (int i = 0; i < data['job'].length; i++)
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 5, bottom: 5),
+                                      child: ListTile(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          uploadPicture(
+                                              'gallery',
+                                              data['job'][i],
+                                              data['job'][i] ==
+                                                      'Videographer' ||
+                                                  data['job'][i] == 'Editor' ||
+                                                  data['job'][i] ==
+                                                      'Cinematographer' ||
+                                                  data['job'][i] == 'Writer' ||
+                                                  data['job'][i] == 'Director');
+                                        },
+                                        title: Column(
+                                          children: [
+                                            TextWidget(
+                                              text: data['job'][i],
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                            ),
+                                            Icon(
+                                              Icons.add,
+                                              size: 32,
+                                              color: primary,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Icon(
-                                        Icons.add,
-                                        size: 32,
-                                        color: primary,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                ],
                               ),
-                          ],
-                        ),
-                      );
-                    }),
-              );
-            },
-          );
-        },
-      ),
+                            );
+                          }),
+                    );
+                  },
+                );
+              },
+            ),
       body: children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedLabelStyle: const TextStyle(fontFamily: 'QBold'),

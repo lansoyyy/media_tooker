@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:media_tooker/screens/pages/freelancers/task_page.dart';
 import 'package:media_tooker/utils/colors.dart';
@@ -23,6 +24,8 @@ class _BookingsPageState extends State<BookingsPage> {
   final timeController = TextEditingController();
   final noteController = TextEditingController();
   final labelController = TextEditingController();
+
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +53,19 @@ class _BookingsPageState extends State<BookingsPage> {
       body: Padding(
         padding: const EdgeInsets.all(5.0),
         child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('Bookings')
-                .where('freelancerId',
-                    isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                .orderBy('dateTime', descending: true)
-                .snapshots(),
+            stream: box.read('user') == 'Client'
+                ? FirebaseFirestore.instance
+                    .collection('Bookings')
+                    .where('myId',
+                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                    .orderBy('dateTime', descending: true)
+                    .snapshots()
+                : FirebaseFirestore.instance
+                    .collection('Bookings')
+                    .where('freelancerId',
+                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                    .orderBy('dateTime', descending: true)
+                    .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
