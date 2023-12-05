@@ -233,17 +233,20 @@ class _ProfilePageState extends State<ProfilePage> {
                               backgroundImage:
                                   NetworkImage(data['profilePicture']),
                               child: Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Icon(
-                                    Icons.add_circle_rounded,
-                                    color: Colors.white,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
                                   ),
-                                ),
-                              )),
+                                  child:
+                                      FirebaseAuth.instance.currentUser!.uid ==
+                                              data.id
+                                          ? const Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: Icon(
+                                                Icons.add_circle_rounded,
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          : const SizedBox())),
                         ),
                       ],
                     ),
@@ -251,22 +254,29 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 10,
                     ),
                     TextWidget(
+                      align: TextAlign.center,
                       text: data['name'],
                       fontSize: 32,
                       color: primary,
                       fontFamily: 'Bold',
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int i = 0; i < data['job'].length; i++)
-                          TextWidget(
-                            text: data['job'][i] + ', ',
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'Medium',
-                          ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            for (int i = 0; i < data['job'].length; i++)
+                              TextWidget(
+                                text: data['job'][i] + ', ',
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: 'Medium',
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 5,

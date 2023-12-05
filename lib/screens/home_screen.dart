@@ -438,12 +438,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
               final sortedData = List<QueryDocumentSnapshot>.from(data.docs);
 
-              sortedData.sort((a, b) {
-                final double priceA = a['dateTime'].toDate();
-                final double priceB = b['dateTime'].toDate();
-
-                return priceB.compareTo(priceA);
-              });
               return sortedData.isNotEmpty
                   ? SizedBox(
                       height: 120,
